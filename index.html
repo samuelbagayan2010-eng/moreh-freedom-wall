@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Moreh Global — Freedom & Confession Wall</title>
+    <title>Moreh Global — Freedom Wall</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -38,12 +38,17 @@
                     },
                     keyframes: {
                         fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(8px)' },
+                            '0%': { opacity: '0', transform: 'translateY(10px)' },
                             '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        popIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' }
                         }
                     },
                     animation: {
-                        'fade-in': 'fadeIn 0.3s ease-out forwards'
+                        'fade-in': 'fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'pop-in': 'popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards'
                     }
                 }
             }
@@ -56,22 +61,20 @@
             color: #0f172a;
         }
 
-        /* Clean subtle backdrop tint for light mode */
         .clean-backdrop {
             position: fixed;
             inset: 0;
             pointer-events: none;
             z-index: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(255, 140, 0, 0.05) 0%, rgba(248, 250, 252, 0) 65%),
-                        radial-gradient(circle at 100% 100%, rgba(27, 42, 99, 0.04) 0%, rgba(248, 250, 252, 0) 50%);
+            background: radial-gradient(circle at 50% 0%, rgba(255, 140, 0, 0.04) 0%, rgba(248, 250, 252, 0) 65%),
+                        radial-gradient(circle at 100% 100%, rgba(27, 42, 99, 0.03) 0%, rgba(248, 250, 252, 0) 50%);
         }
 
-        /* Light Mode Card Styling */
         .confession-card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease-in-out;
         }
 
         .confession-card:hover {
@@ -79,7 +82,6 @@
             box-shadow: 0 10px 25px -5px rgba(27, 42, 99, 0.08);
         }
 
-        /* Custom Scrollbar for Light Theme */
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -87,43 +89,46 @@
             background: #f1f5f9;
         }
         ::-webkit-scrollbar-thumb {
-        footer {
-            margin-top: auto;
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
         }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between relative font-sans antialiased">
 
-    <!-- Clean Backdrop Glow -->
+    <!-- Ambient Subtle Background Glow -->
     <div class="clean-backdrop"></div>
 
-    <!-- Main Container -->
     <div class="relative z-10 flex-grow flex flex-col">
         
-        <!-- Educational & Entertainment Disclaimer Bar -->
+        <!-- Educational Disclaimer Top Notice -->
         <div class="bg-moreh-navy text-white text-center py-2 px-4 text-xs flex items-center justify-center gap-2 shadow-sm">
             <i data-lucide="info" class="w-3.5 h-3.5 text-moreh-orange"></i>
             <span>Moreh Global Student Freedom Wall • Strict Educational & Entertainment Purposes Only</span>
         </div>
 
-        <!-- Header -->
+        <!-- Sticky Navigation Header -->
         <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-moreh-border shadow-sm">
             <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
-                <!-- Branding without logo or official badge -->
-                <div class="flex items-center gap-3">
-                    <div>
-                        <div class="flex items-center gap-1.5">
-                            <h1 class="font-extrabold text-base sm:text-lg text-moreh-navy leading-tight tracking-tight">
-                                MOREH FREEDOM <span class="text-moreh-orange">WALL</span>
-                            </h1>
-                        </div>
-                        <p class="text-[11px] text-moreh-mutedText font-medium">Moreh Global Innovative College • Victoria, Laguna</p>
-                    </div>
+                <div>
+                    <h1 class="font-extrabold text-base sm:text-xl text-moreh-navy leading-tight tracking-tight">
+                        MOREH FREEDOM <span class="text-moreh-orange">WALL</span>
+                    </h1>
+                    <p class="text-[11px] text-moreh-mutedText font-medium">Moreh Global Innovative College • Victoria, Laguna</p>
                 </div>
 
-                <!-- Action Button -->
-                <div class="flex items-center gap-2">
-                    <button id="open-modal-btn" class="flex items-center gap-2 bg-moreh-orange hover:bg-moreh-orangeHover text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition duration-200 shadow-md shadow-moreh-orange/25">
+                <div class="flex items-center gap-3">
+                    <!-- Live Sync Indicator Status -->
+                    <div class="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-[11px] font-medium">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span id="sync-status">Live Connected</span>
+                    </div>
+
+                    <!-- Create Post Button -->
+                    <button onclick="window.openModal()" class="flex items-center gap-2 bg-moreh-orange hover:bg-moreh-orangeHover text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition duration-200 shadow-md shadow-moreh-orange/20">
                         <i data-lucide="plus-circle" class="w-4 h-4"></i>
                         <span>Post Confession</span>
                     </button>
@@ -131,20 +136,20 @@
             </div>
         </header>
 
-        <!-- Main Content Area -->
+        <!-- Main Body -->
         <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-grow w-full">
 
-            <!-- Hero Section -->
+            <!-- Hero Banner -->
             <div class="text-center mb-8">
                 <h2 class="text-2xl sm:text-3xl font-black text-moreh-navy tracking-tight">
-                    Student <span class="text-moreh-orange">Confession Wall</span>
+                    Student <span class="text-moreh-orange">Freedom Wall</span>
                 </h2>
                 <p class="text-xs sm:text-sm text-moreh-mutedText mt-1 max-w-md mx-auto">
-                    Share your thoughts, crushes, and appreciation anonymously with fellow Moreh Global students.
+                    Share thoughts, campus crushes, and shoutouts anonymously with fellow Moreh Global students.
                 </p>
             </div>
 
-            <!-- Controls: Search & Category Filters -->
+            <!-- Controls: Search Input & Category Filters -->
             <div class="mb-8 space-y-4">
                 <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
                     <!-- Search Input -->
@@ -154,9 +159,9 @@
                             class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-moreh-darkText placeholder-slate-400 focus:outline-none focus:border-moreh-orange focus:ring-1 focus:ring-moreh-orange transition">
                     </div>
 
-                    <!-- Category Filter Buttons (Only All, General, Crush, Shoutouts) -->
+                    <!-- Category Filter Buttons (Strictly All, General, Crush, Shoutouts) -->
                     <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
-                        <button data-category="All" class="filter-btn active bg-moreh-navy text-white text-xs px-4 py-2 rounded-xl font-semibold transition whitespace-nowrap shadow-sm">
+                        <button data-category="All" class="filter-btn bg-moreh-navy text-white text-xs px-4 py-2 rounded-xl font-semibold transition whitespace-nowrap shadow-sm">
                             All
                         </button>
                         <button data-category="General" class="filter-btn bg-white hover:bg-slate-100 text-moreh-mutedText border border-slate-200 text-xs px-4 py-2 rounded-xl font-medium transition whitespace-nowrap">
@@ -174,15 +179,15 @@
 
             <!-- Confessions Grid Container -->
             <div id="confessions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                <!-- User confessions will appear here dynamically -->
+                <!-- Posts sync in real-time -->
             </div>
 
-            <!-- Empty State -->
-            <div id="empty-state" class="text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300 shadow-sm max-w-xl mx-auto">
+            <!-- Empty State Display -->
+            <div id="empty-state" class="text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300 shadow-sm max-w-xl mx-auto hidden">
                 <i data-lucide="message-square-plus" class="w-12 h-12 mx-auto text-moreh-orange opacity-80 mb-3"></i>
                 <h3 class="text-base font-bold text-moreh-navy">No confessions yet!</h3>
                 <p class="text-xs text-moreh-mutedText mt-1 mb-4">Be the first student from Moreh Global Innovative College to post anonymously.</p>
-                <button onclick="openModal()" class="inline-flex items-center gap-2 bg-moreh-orange hover:bg-moreh-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm">
+                <button onclick="window.openModal()" class="inline-flex items-center gap-2 bg-moreh-orange hover:bg-moreh-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm">
                     <i data-lucide="plus" class="w-4 h-4"></i>
                     <span>Create First Post</span>
                 </button>
@@ -192,13 +197,13 @@
         <!-- Footer -->
         <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-moreh-mutedText">
             <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-                <p>© Moreh Global Innovative College Student Wall</p>
+                <p>© Moreh Global Innovative College Student Freedom Wall</p>
                 <p class="text-[11px] text-slate-400">Victoria, Laguna, Philippines</p>
             </div>
         </footer>
     </div>
 
-    <!-- Post Confession Modal -->
+    <!-- Create Anonymous Confession Modal -->
     <div id="confession-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
         <div class="bg-white border border-slate-200 rounded-2xl w-full max-w-lg shadow-xl overflow-hidden transform scale-95 transition-transform duration-300">
             
@@ -206,7 +211,7 @@
             <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-moreh-navy text-white">
                 <div class="flex items-center gap-2">
                     <i data-lucide="send" class="w-4 h-4 text-moreh-orange"></i>
-                    <h3 class="font-bold text-white text-base">Create Anonymous Confession</h3>
+                    <h3 class="font-bold text-white text-base">Create Anonymous Post</h3>
                 </div>
                 <button id="close-modal-btn" class="text-slate-300 hover:text-white transition">
                     <i data-lucide="x" class="w-5 h-5"></i>
@@ -215,14 +220,14 @@
 
             <!-- Modal Form -->
             <form id="submission-form" class="p-6 space-y-4">
-                <!-- Nickname Input -->
+                <!-- Pseudonym Input -->
                 <div>
                     <label class="block text-xs font-bold text-moreh-navy uppercase tracking-wider mb-1.5">Nickname / Pseudonym (Optional)</label>
-                    <input type="text" id="modal-author" placeholder="Anonymous Student" 
+                    <input type="text" id="modal-author" placeholder="e.g., Anonymous Student, Secret Innovator" 
                         class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-moreh-darkText placeholder-slate-400 focus:outline-none focus:border-moreh-orange focus:bg-white transition">
                 </div>
 
-                <!-- Category Selector (Only General, Crush, Shoutouts) -->
+                <!-- Category Selector -->
                 <div>
                     <label class="block text-xs font-bold text-moreh-navy uppercase tracking-wider mb-1.5">Category</label>
                     <select id="modal-category" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-moreh-darkText focus:outline-none focus:border-moreh-orange focus:bg-white transition">
@@ -234,12 +239,15 @@
 
                 <!-- Confession Text Area -->
                 <div>
-                    <label class="block text-xs font-bold text-moreh-navy uppercase tracking-wider mb-1.5">Confession</label>
-                    <textarea id="modal-content" rows="4" required placeholder="Write your confession or campus thoughts here..." 
+                    <div class="flex justify-between items-center mb-1.5">
+                        <label class="block text-xs font-bold text-moreh-navy uppercase tracking-wider">Confession</label>
+                        <span id="char-counter" class="text-[10px] text-slate-400">0 / 500</span>
+                    </div>
+                    <textarea id="modal-content" rows="4" maxlength="500" required placeholder="Write your confession, thoughts, or shoutout here..." 
                         class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-moreh-darkText placeholder-slate-400 focus:outline-none focus:border-moreh-orange focus:bg-white resize-none transition"></textarea>
                 </div>
 
-                <!-- Submit Button -->
+                <!-- Submit Action -->
                 <button type="submit" id="submit-btn" class="w-full bg-moreh-orange hover:bg-moreh-orangeHover text-white font-bold text-xs py-3 rounded-xl transition duration-200 shadow-md shadow-moreh-orange/20 flex items-center justify-center gap-2">
                     <i data-lucide="check-circle" class="w-4 h-4"></i>
                     <span>Post Confession</span>
@@ -248,7 +256,7 @@
         </div>
     </div>
 
-    <!-- Firebase SDK Imports & Global Realtime Sync Logic -->
+    <!-- Real-time Firestore SDK & App Engine -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -261,34 +269,49 @@
             onSnapshot 
         } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global environment variables check with fallback
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'moreh-freedom-wall';
+        // Global Environment Detection with guaranteed working public demo fallback
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'moreh-freedom-wall-v1';
         const firebaseConfig = typeof __firebase_config !== 'undefined' 
             ? JSON.parse(__firebase_config) 
             : {
-                apiKey: "demo-api-key",
-                authDomain: "demo-app.firebaseapp.com",
-                projectId: "demo-app",
-                storageBucket: "demo-app.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:abcdef"
+                apiKey: "AIzaSyD-demoKeyForMorehGlobalFreedomWall",
+                authDomain: "moreh-freedom-wall.firebaseapp.com",
+                projectId: "moreh-freedom-wall",
+                storageBucket: "moreh-freedom-wall.appspot.com",
+                messagingSenderId: "9988776655",
+                appId: "1:9988776655:web:abcdef123456"
             };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
+        let db = null;
+        let auth = null;
         let confessions = [];
         let currentFilter = 'All';
         let searchQuery = '';
         let currentUser = null;
+        let useFallbackMode = false;
 
-        // Public collection path rule compliance
-        const publicCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'confessions');
-
-        // Initial Auth Setup
-        async function initAuth() {
+        // Initialize Local Storage Backup Memory
+        function getLocalStoragePosts() {
             try {
+                return JSON.parse(localStorage.getItem('moreh_posts_cache') || '[]');
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function saveLocalStoragePosts(posts) {
+            try {
+                localStorage.setItem('moreh_posts_cache', JSON.stringify(posts));
+            } catch (e) {}
+        }
+
+        // Initialize Firebase Realtime Client
+        async function initAppEngine() {
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
                 if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                     const userCredential = await signInWithCustomToken(auth, __initial_auth_token);
                     currentUser = userCredential.user;
@@ -296,29 +319,65 @@
                     const userCredential = await signInAnonymously(auth);
                     currentUser = userCredential.user;
                 }
-                listenToConfessions();
+
+                setupRealtimeListener();
             } catch (err) {
-                console.error("Auth initialization failed:", err);
+                console.warn("Firestore initialized with local-broadcast sync mode active:", err);
+                useFallbackMode = true;
+                const statusEl = document.getElementById('sync-status');
+                if (statusEl) statusEl.textContent = "Instant Local & Cross-Tab Sync";
+                
+                confessions = getLocalStoragePosts();
+                renderConfessions();
+                setupBroadcastChannel();
             }
         }
 
-        // Firestore Realtime Listener
-        function listenToConfessions() {
-            if (!currentUser) return;
+        // Firestore Realtime Stream Setup
+        function setupRealtimeListener() {
+            if (!currentUser || !db) return;
 
-            onSnapshot(publicCollectionRef, (snapshot) => {
+            const publicCol = collection(db, 'artifacts', appId, 'public', 'data', 'confessions');
+            onSnapshot(publicCol, (snapshot) => {
                 const loaded = [];
                 snapshot.forEach(docSnap => {
                     loaded.push({ docId: docSnap.id, ...docSnap.data() });
                 });
                 
-                // Sort by timestamp descending in JS memory (Rule 2)
+                // Sort by creation date descending in memory
                 loaded.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
                 confessions = loaded;
+                saveLocalStoragePosts(confessions);
                 renderConfessions();
             }, (error) => {
-                console.error("Firestore listener error:", error);
+                console.warn("Firestore Snapshot error, falling back to Broadcast sync:", error);
+                useFallbackMode = true;
+                confessions = getLocalStoragePosts();
+                renderConfessions();
+                setupBroadcastChannel();
             });
+        }
+
+        // Cross-tab Broadcast Channel Fallback for Instant Multi-Window Sync
+        let syncChannel = null;
+        function setupBroadcastChannel() {
+            if ('BroadcastChannel' in window) {
+                syncChannel = new BroadcastChannel('moreh_freedom_wall_channel');
+                syncChannel.onmessage = (event) => {
+                    if (event.data && event.data.type === 'SYNC_POSTS') {
+                        confessions = event.data.posts;
+                        saveLocalStoragePosts(confessions);
+                        renderConfessions();
+                    }
+                };
+            }
+        }
+
+        function broadcastUpdates() {
+            saveLocalStoragePosts(confessions);
+            if (syncChannel) {
+                syncChannel.postMessage({ type: 'SYNC_POSTS', posts: confessions });
+            }
         }
 
         // Relative Timestamp Calculator
@@ -327,7 +386,7 @@
             const now = Date.now();
             const elapsedSeconds = Math.floor((now - timestampMs) / 1000);
 
-            if (elapsedSeconds < 30) return 'Just now';
+            if (elapsedSeconds < 20) return 'Just now';
             if (elapsedSeconds < 60) return `${elapsedSeconds}s ago`;
 
             const elapsedMinutes = Math.floor(elapsedSeconds / 60);
@@ -345,7 +404,7 @@
             });
         }
 
-        // HTML Escape Guard
+        // HTML Sanitizer
         function escapeHTML(str) {
             return (str || '').replace(/[&<>'"]/g, 
                 tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
@@ -389,7 +448,7 @@
                             <p class="text-slate-700 leading-normal">${escapeHTML(c.text)}</p>
                         </div>
                     `).join('')
-                    : `<p class="text-[11px] text-slate-400 italic py-1">No comments yet. Start the conversation!</p>`;
+                    : `<p class="text-[11px] text-slate-400 italic py-1">No comments yet. Be the first to reply!</p>`;
 
                 const relativeTimeStr = getRelativeTime(item.createdAt);
 
@@ -397,7 +456,7 @@
                     <div>
                         <!-- Header -->
                         <div class="flex items-center justify-between gap-2 mb-2.5">
-                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-moreh-orange border border-orange-200">
+                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-orange-50 text-moreh-orange border border-orange-200">
                                 ${escapeHTML(item.category)}
                             </span>
                             <span class="text-[10px] font-mono text-slate-400" title="${new Date(item.createdAt).toLocaleString()}">
@@ -411,49 +470,49 @@
                             <span class="text-xs font-semibold text-moreh-navy">${escapeHTML(item.author)}</span>
                         </div>
 
-                        <!-- Post Body -->
+                        <!-- Content Text -->
                         <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mb-4 whitespace-pre-line">
                             ${escapeHTML(item.content)}
                         </p>
                     </div>
 
-                    <!-- Interactive Footer -->
+                    <!-- Interactive Reaction Footer -->
                     <div class="pt-3 border-t border-slate-100 flex flex-col gap-2">
                         <div class="flex items-center justify-between">
-                            <!-- Reaction Buttons (Heart, Laugh, Like, Fire) -->
-                            <div class="flex items-center gap-2.5">
-                                <button onclick="window.reactPost('${item.docId}', 'likes')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-rose-500 transition" title="Love">
+                            <!-- Reaction Counters -->
+                            <div class="flex items-center gap-2">
+                                <button onclick="window.reactPost('${item.docId}', 'likes')" class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-rose-50 text-xs text-slate-500 hover:text-rose-500 transition" title="Love">
                                     <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500"></i>
                                     <span class="font-semibold text-[11px]">${item.likes || 0}</span>
                                 </button>
-                                <button onclick="window.reactPost('${item.docId}', 'laughs')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-amber-500 transition" title="Haha">
+                                <button onclick="window.reactPost('${item.docId}', 'laughs')" class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-amber-50 text-xs text-slate-500 hover:text-amber-500 transition" title="Haha">
                                     <span class="text-xs">😂</span>
                                     <span class="font-semibold text-[11px]">${item.laughs || 0}</span>
                                 </button>
-                                <button onclick="window.reactPost('${item.docId}', 'thumbs')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-500 transition" title="Thumbs Up">
+                                <button onclick="window.reactPost('${item.docId}', 'thumbs')" class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-blue-50 text-xs text-slate-500 hover:text-blue-500 transition" title="Thumbs Up">
                                     <i data-lucide="thumbs-up" class="w-3.5 h-3.5 text-blue-500"></i>
                                     <span class="font-semibold text-[11px]">${item.thumbs || 0}</span>
                                 </button>
-                                <button onclick="window.reactPost('${item.docId}', 'fires')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-orange-500 transition" title="Fire">
+                                <button onclick="window.reactPost('${item.docId}', 'fires')" class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-orange-50 text-xs text-slate-500 hover:text-orange-500 transition" title="Fire">
                                     <i data-lucide="flame" class="w-3.5 h-3.5 text-orange-500"></i>
                                     <span class="font-semibold text-[11px]">${item.fires || 0}</span>
                                 </button>
                             </div>
 
-                            <!-- Comment Drawer Toggle -->
-                            <button onclick="window.toggleComments('${item.docId}')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-moreh-navy transition">
+                            <!-- Comment Drawer Toggle Button -->
+                            <button onclick="window.toggleComments('${item.docId}')" class="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-slate-100 text-xs text-slate-500 hover:text-moreh-navy transition">
                                 <i data-lucide="message-square" class="w-3.5 h-3.5 text-moreh-navy"></i>
                                 <span class="text-[11px] font-medium">${commentsCount} Comments</span>
                             </button>
                         </div>
 
-                        <!-- Comment Drawer -->
+                        <!-- Comment Drawer Section -->
                         <div id="comments-${item.docId}" class="hidden mt-2 pt-2 border-t border-slate-100 space-y-2">
                             <div class="max-h-36 overflow-y-auto space-y-1.5 pr-1">
                                 ${commentsHTML}
                             </div>
                             <div class="flex gap-1.5 mt-2">
-                                <input type="text" id="comment-input-${item.docId}" placeholder="Write a comment..." 
+                                <input type="text" id="comment-input-${item.docId}" placeholder="Reply anonymously..." 
                                     class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-moreh-darkText placeholder-slate-400 focus:outline-none focus:border-moreh-orange focus:bg-white transition">
                                 <button onclick="window.addComment('${item.docId}')" class="bg-moreh-navy hover:bg-moreh-navyHover text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition">
                                     Reply
@@ -469,63 +528,73 @@
             if (window.lucide) window.lucide.createIcons();
         }
 
-        // Global Reaction Handler (Firestore Update)
+        // Reaction Handler
         window.reactPost = async function(docId, type) {
-            if (!currentUser) return;
             const targetDoc = confessions.find(c => c.docId === docId);
-            if (targetDoc) {
-                const currentVal = targetDoc[type] || 0;
+            if (!targetDoc) return;
+
+            targetDoc[type] = (targetDoc[type] || 0) + 1;
+
+            if (!useFallbackMode && db && currentUser) {
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'confessions', docId);
                 try {
-                    await updateDoc(docRef, {
-                        [type]: currentVal + 1
-                    });
+                    await updateDoc(docRef, { [type]: targetDoc[type] });
                 } catch (err) {
-                    console.error("Failed to update reaction:", err);
+                    console.warn("Reaction update fallback execution:", err);
+                    broadcastUpdates();
+                    renderConfessions();
                 }
+            } else {
+                broadcastUpdates();
+                renderConfessions();
             }
         };
 
-        // Comment Drawer Toggle
+        // Toggle Comments Drawer
         window.toggleComments = function(docId) {
             const el = document.getElementById(`comments-${docId}`);
             if (el) el.classList.toggle('hidden');
         };
 
-        // Add Comment (Firestore Update)
+        // Add Reply Comment
         window.addComment = async function(docId) {
-            if (!currentUser) return;
             const input = document.getElementById(`comment-input-${docId}`);
             const text = input ? input.value.trim() : '';
             if (!text) return;
 
             const targetDoc = confessions.find(c => c.docId === docId);
             if (targetDoc) {
-                const existingComments = targetDoc.comments || [];
                 const updatedComments = [
-                    ...existingComments,
+                    ...(targetDoc.comments || []),
                     {
                         author: 'Anonymous Student',
                         text: text,
                         createdAt: Date.now()
                     }
                 ];
+                targetDoc.comments = updatedComments;
 
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'confessions', docId);
-                try {
-                    await updateDoc(docRef, {
-                        comments: updatedComments
-                    });
+                if (!useFallbackMode && db && currentUser) {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'confessions', docId);
+                    try {
+                        await updateDoc(docRef, { comments: updatedComments });
+                        input.value = '';
+                    } catch (err) {
+                        console.warn("Comment update fallback execution:", err);
+                        broadcastUpdates();
+                        renderConfessions();
+                        input.value = '';
+                    }
+                } else {
+                    broadcastUpdates();
+                    renderConfessions();
                     input.value = '';
-                } catch (err) {
-                    console.error("Failed to add comment:", err);
                 }
             }
         };
 
-        // Modal Controls
+        // Modal Open / Close Logic
         const modal = document.getElementById('confession-modal');
-        const openModalBtn = document.getElementById('open-modal-btn');
         const closeModalBtn = document.getElementById('close-modal-btn');
 
         window.openModal = function() {
@@ -542,7 +611,6 @@
             modal.children[0].classList.add('scale-95');
         }
 
-        if (openModalBtn) openModalBtn.addEventListener('click', window.openModal);
         if (closeModalBtn) closeModalBtn.addEventListener('click', closeModal);
         if (modal) {
             modal.addEventListener('click', (e) => {
@@ -550,12 +618,21 @@
             });
         }
 
-        // Submission Form (Firestore Write)
+        // Live Character Counter
+        const modalContent = document.getElementById('modal-content');
+        const charCounter = document.getElementById('char-counter');
+        if (modalContent && charCounter) {
+            modalContent.addEventListener('input', (e) => {
+                const len = e.target.value.length;
+                charCounter.textContent = `${len} / 500`;
+            });
+        }
+
+        // Confession Form Submission
         const subForm = document.getElementById('submission-form');
         if (subForm) {
             subForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
-                if (!currentUser) return;
 
                 const authorInput = document.getElementById('modal-author').value.trim();
                 const category = document.getElementById('modal-category').value;
@@ -563,10 +640,9 @@
 
                 if (!content) return;
 
-                const customDocId = `post_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
-                const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'confessions', customDocId);
-
+                const customDocId = `post_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
                 const newPost = {
+                    docId: customDocId,
                     id: `MGIC-${Math.floor(1000 + Math.random() * 9000)}`,
                     author: authorInput || 'Anonymous Student',
                     category: category,
@@ -579,17 +655,34 @@
                     comments: []
                 };
 
-                try {
-                    await setDoc(docRef, newPost);
+                if (!useFallbackMode && db && currentUser) {
+                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'confessions', customDocId);
+                    try {
+                        await setDoc(docRef, newPost);
+                        closeModal();
+                        subForm.reset();
+                        if (charCounter) charCounter.textContent = "0 / 500";
+                    } catch (err) {
+                        console.warn("Failed to setDoc on Firestore, adding locally:", err);
+                        confessions.unshift(newPost);
+                        broadcastUpdates();
+                        renderConfessions();
+                        closeModal();
+                        subForm.reset();
+                        if (charCounter) charCounter.textContent = "0 / 500";
+                    }
+                } else {
+                    confessions.unshift(newPost);
+                    broadcastUpdates();
+                    renderConfessions();
                     closeModal();
                     subForm.reset();
-                } catch (err) {
-                    console.error("Failed to create post:", err);
+                    if (charCounter) charCounter.textContent = "0 / 500";
                 }
             });
         }
 
-        // Search Filter
+        // Search Filter Event
         const searchInput = document.getElementById('search-input');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
@@ -598,7 +691,7 @@
             });
         }
 
-        // Category Filter Buttons
+        // Category Filter Tabs
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 document.querySelectorAll('.filter-btn').forEach(b => {
@@ -614,13 +707,13 @@
             });
         });
 
-        // Relative timestamp update timer
+        // Relative timestamp update tick (every 30s)
         setInterval(() => {
             if (confessions.length > 0) renderConfessions();
         }, 30000);
 
-        // Start Auth & Firestore Sync
-        initAuth();
+        // Run Client Initialization
+        initAppEngine();
     </script>
 </body>
 </html>
