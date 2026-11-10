@@ -250,7 +250,7 @@
       increment, 
       query, 
       orderBy 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBIsAKHrtVXyzNUWlsGwWLzdrmJKRor2XU",
@@ -594,6 +594,12 @@
         ...doc.data()
       }));
       window.filterConfessions();
+    }, (error) => {
+      console.error("Firestore Error: ", error);
+      document.getElementById('loadingSpinner').innerHTML = `
+        <p class="text-xs text-red-500 font-bold">Failed to connect to database.</p>
+        <p class="text-[11px] text-slate-500 mt-1">Please ensure Firebase Security Rules are set to test mode (allow read, write: if true).</p>
+      `;
     });
   </script>
 </body>
