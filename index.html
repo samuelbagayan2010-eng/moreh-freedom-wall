@@ -57,6 +57,14 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased">
 
+  <!-- Notice Banner: Disclaimer & Purpose -->
+  <div class="bg-gradient-to-r from-blue-900 via-[#1b2a63] to-slate-900 text-white text-[11px] font-medium py-1.5 px-4 text-center border-b border-blue-800/50 flex flex-wrap items-center justify-center gap-2">
+    <span class="bg-[#ff8c00] text-white font-extrabold px-2 py-0.5 rounded text-[10px] tracking-wider uppercase shadow-sm">Disclaimer</span>
+    <span>For Educational & Entertainment Purposes Only • Created For Fun</span>
+    <span class="text-blue-300 hidden sm:inline">•</span>
+    <span class="text-amber-300 font-semibold">⚠️ Temporary website that may be deleted at any time</span>
+  </div>
+
   <!-- Admin Active Banner -->
   <div id="adminBanner" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold py-2 px-4 text-center flex items-center justify-center gap-2 shadow-md z-40">
     <i class="fa-solid fa-shield-halved text-sm animate-pulse"></i>
@@ -75,10 +83,14 @@
           <img src="moreh-removebg-preview.png" alt="Moreh Global Innovative College Logo" class="relative w-12 h-12 object-cover rounded-full border-2 border-white shadow-md">
         </div>
         <div>
-          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight leading-none">
-            <span class="text-[#1b2a63]">MOREH</span> <span class="text-[#ff8c00]">FREEDOM WALL</span>
-          </h1>
-          <p class="text-[11px] text-slate-500 font-medium mt-1">School of Righteousness and Excellence • Victoria, Laguna</p>
+          <div class="flex items-center justify-center sm:justify-start gap-2">
+            <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight leading-none">
+              <span class="text-[#1b2a63]">MOREH</span> <span class="text-[#ff8c00]">FREEDOM WALL</span>
+            </h1>
+          </div>
+          <p class="text-[11px] text-slate-500 font-medium mt-1">
+            School of Righteousness and Excellence • Victoria, Laguna
+          </p>
         </div>
       </div>
 
@@ -100,6 +112,14 @@
   <!-- Main Feed Container -->
   <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full">
     
+    <!-- Purpose Info Box -->
+    <div class="mb-4 bg-amber-50/80 border border-amber-200/80 rounded-xl p-3 flex items-start gap-2.5 text-xs text-amber-800 shadow-sm">
+      <i class="fa-solid fa-circle-info text-amber-600 text-sm mt-0.5"></i>
+      <div>
+        <span class="font-bold">Student Notice:</span> This wall is an independent student project created purely for <strong>educational, entertainment, and fun purposes</strong>. It is temporary and can be taken down or reset at any time.
+      </div>
+    </div>
+
     <!-- Controls (Search & Filter) -->
     <div class="glass-card p-4 rounded-2xl border border-slate-200/80 shadow-sm mb-6 space-y-4">
       
@@ -196,13 +216,22 @@
     </div>
   </div>
 
-  <!-- Footer with Creator Attribution & AI Label -->
-  <footer class="glass-card border-t border-slate-200/80 py-5 text-center text-xs text-slate-500 mt-auto space-y-1.5">
-    <p class="font-bold text-slate-700">© Moreh Global Innovative College Freedom Wall</p>
-    <div class="flex items-center justify-center gap-2 text-[11px] text-slate-500 font-medium">
+  <!-- Footer with Creator Attribution, Educational Purpose & Temporary Notice -->
+  <footer class="glass-card border-t border-slate-200/80 py-5 text-center text-xs text-slate-500 mt-auto space-y-2">
+    <p class="font-bold text-slate-700">© Moreh Freedom Wall Project</p>
+    
+    <div class="flex flex-wrap items-center justify-center gap-2 text-[11px] text-slate-500 font-medium px-4">
+      <span>Educational & Entertainment Purpose Only</span>
+      <span class="text-slate-300 hidden sm:inline">•</span>
+      <span>For Fun</span>
+      <span class="text-slate-300 hidden sm:inline">•</span>
+      <span class="text-amber-600 font-semibold">Temporary Site (Subject to Deletion Anytime)</span>
+    </div>
+
+    <div class="flex items-center justify-center gap-2 text-[11px] text-slate-500 font-medium pt-1">
       <span>Developed by <strong class="text-[#1b2a63]">Samuel Bagayan</strong></span>
       <span class="text-slate-300">•</span>
-      <span class="bg-blue-50 text-blue-700 px-2 py-0.5 rounded-full border border-blue-200/60 font-semibold text-[10px]">AI Collaborator Enabled</span>
+      <span class="bg-blue-50 text-blue-700 px-2.5 py-0.5 rounded-full border border-blue-200/60 font-semibold text-[10px]">AI Collaborator Enabled</span>
     </div>
   </footer>
 
@@ -221,7 +250,7 @@
       increment, 
       query, 
       orderBy 
-    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBIsAKHrtVXyzNUWlsGwWLzdrmJKRor2XU",
