@@ -54,7 +54,12 @@
 
     .glass-card {
       background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+    }
+
+    .security-badge {
+      background: linear-gradient(135deg, #0f172a 0%, #1b2a63 100%);
     }
   </style>
 </head>
@@ -90,9 +95,12 @@
               <span class="text-[#1b2a63]">MOREH</span> <span class="text-[#ff8c00]">FREEDOM WALL</span>
             </h1>
           </div>
-          <p class="text-[11px] text-slate-500 font-medium mt-1">
-            School of Righteousness and Excellence • Victoria, Laguna
-          </p>
+          <div class="flex items-center gap-2 mt-1">
+            <p class="text-[11px] text-slate-500 font-medium">School of Righteousness and Excellence • Victoria, Laguna</p>
+            <span class="security-badge text-[9px] text-emerald-400 px-2 py-0.5 rounded-full font-bold flex items-center gap-1 shadow-inner">
+              <i class="fa-solid fa-lock text-[8px]"></i> Secured
+            </span>
+          </div>
         </div>
       </div>
 
@@ -180,7 +188,7 @@
       <form id="confessionForm" onsubmit="window.submitConfession(event)" class="p-5 space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Pseudonym (Optional)</label>
-          <input type="text" id="authorInput" placeholder="e.g. Secret Student, BSIT Boy, Grade 11" 
+          <input type="text" id="authorInput" maxlength="30" placeholder="e.g. Secret Student, BSIT Boy, Grade 11" 
             class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] focus:bg-white transition-all shadow-inner">
         </div>
 
@@ -243,8 +251,7 @@
       onSnapshot, 
       doc, 
       deleteDoc,
-      runTransaction,
-      arrayUnion, 
+      runTransaction, 
       query, 
       orderBy 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -268,6 +275,8 @@
     let isAdmin = localStorage.getItem('moreh_admin') === 'true';
     const pendingReactions = new Set();
     const openDrawerIds = new Set();
+    let lastPostTime = 0;
+    let lastCommentTime = 0;
 
     const getMyPostKeys = () => JSON.parse(localStorage.getItem('my_post_keys') || '{}');
     const saveMyPostKey = (postId, secretKey) => {
@@ -341,16 +350,49 @@
       renderConfessions(filtered);
     };
 
+    // Anti-Spam Rate Limiting & Secure Post Submission
     window.submitConfession = async (e) => {
       e.preventDefault();
+      const now = Date.now();
+      if (now - lastPostTime < 5000) {
+        alert("🛡️ Anti-Spam Protection: Please wait 5 seconds before posting another confession.");
+        return;
+      }
+
       const submitBtn = document.getElementById('submitBtn');
       submitBtn.disabled = true;
-      submitBtn.opacity = '0.7';
+      submitBtn.style.opacity = '0.7';
 
-      const author = document.getElementById('authorInput').value.trim() || 'Anonymous Student';
+      const author = sanitizeInput(document.getElementById('authorInput').value.trim() || 'Anonymous Student');
       const category = document.getElementById('categorySelect').value;
-      const content = document.getElementById('contentInput').value.trim();
-      const authorSecretKey = 'key_' + Math.random().toString(36).substr(2, 9) + Date.now();
+      const content = sanitizeInput(document.getElementById('contentInput').value.trim());
+
+      if (!content || content.length > 500) {
+        alert("Confession content is invalid or too long.");
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        return;
+      }
+
+      const authorSecretKey = 'key_' + Math.random().toString(36).substr(2, 9) + now;
+
+      // Optimistic Local State Addition for Instant UI Display
+      const tempId = 'temp_' + now;
+      const newPost = {
+        id: tempId,
+        author,
+        category,
+        content,
+        authorSecretKey,
+        timestamp: now,
+        reactions: { heart: 0, laugh: 0, fire: 0, thumbs: 0 },
+        comments: []
+      };
+
+      allConfessions.unshift(newPost);
+      window.filterConfessions();
+      window.closeModal();
+      lastPostTime = now;
 
       try {
         const docRef = await addDoc(confessionsRef, {
@@ -358,22 +400,22 @@
           category,
           content,
           authorSecretKey,
-          timestamp: Date.now(),
+          timestamp: now,
           reactions: { heart: 0, laugh: 0, fire: 0, thumbs: 0 },
           comments: []
         });
 
         saveMyPostKey(docRef.id, authorSecretKey);
-        window.closeModal();
       } catch (err) {
         console.error("Error writing post to database: ", err);
         alert("Network error: Could not save post to cloud.");
       } finally {
         submitBtn.disabled = false;
-        submitBtn.opacity = '1';
+        submitBtn.style.opacity = '1';
       }
     };
 
+    // Instant Optimistic Reaction Handling
     window.reactPost = async (id, type) => {
       const reactionKey = `${id}_${type}`;
       if (pendingReactions.has(reactionKey)) return;
@@ -384,6 +426,13 @@
       const delta = hasReacted ? -1 : 1;
 
       saveMyReaction(id, type, !hasReacted);
+
+      // Instant optimistic update in local state
+      const post = allConfessions.find(p => p.id === id);
+      if (post) {
+        if (!post.reactions) post.reactions = { heart: 0, laugh: 0, fire: 0, thumbs: 0 };
+        post.reactions[type] = Math.max(0, (post.reactions[type] || 0) + delta);
+      }
       window.filterConfessions();
 
       try {
@@ -406,6 +455,9 @@
       } catch (err) {
         console.error("Transaction failed: ", err);
         saveMyReaction(id, type, hasReacted);
+        if (post) {
+          post.reactions[type] = Math.max(0, post.reactions[type] - delta);
+        }
         window.filterConfessions();
       } finally {
         pendingReactions.delete(reactionKey);
@@ -442,13 +494,33 @@
       }
     };
 
+    // Instant Optimistic Comment Submission (Does not hide drawer)
     window.addComment = async (e, postId) => {
       e.preventDefault();
+      const now = Date.now();
+      if (now - lastCommentTime < 3000) {
+        alert("🛡️ Anti-Spam Protection: Please wait 3 seconds before commenting again.");
+        return;
+      }
+
       const input = document.getElementById(`comment-input-${postId}`);
-      const text = input.value.trim();
+      const text = sanitizeInput(input.value.trim());
       if (!text) return;
 
-      const commentData = { text, timestamp: Date.now() };
+      const commentData = { text, timestamp: now };
+
+      // Keep drawer open permanently when adding a comment
+      openDrawerIds.add(postId);
+
+      // Instant optimistic update in local state
+      const post = allConfessions.find(p => p.id === postId);
+      if (post) {
+        if (!post.comments) post.comments = [];
+        post.comments.push(commentData);
+      }
+      input.value = '';
+      window.filterConfessions();
+      lastCommentTime = now;
 
       try {
         const postRef = doc(db, "confessions", postId);
@@ -463,9 +535,9 @@
             comments: [...currentComments, commentData]
           });
         });
-        input.value = '';
       } catch (err) {
         console.error("Error adding comment: ", err);
+        alert("Network error: Could not save comment.");
       }
     };
 
@@ -479,6 +551,17 @@
       if (hours < 24) return `${hours}h ago`;
       const days = Math.floor(hours / 24);
       return `${days}d ago`;
+    }
+
+    function sanitizeInput(str) {
+      if (!str) return '';
+      return str.replace(/[<>]/g, ''); // Strips out potential script injection vectors
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, (m) => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
+      }[m]));
     }
 
     function renderConfessions(posts) {
@@ -578,7 +661,7 @@
               </div>
 
               <form onsubmit="window.addComment(event, '${post.id}')" class="flex gap-2 pt-1">
-                <input type="text" id="comment-input-${post.id}" placeholder="Write a comment..." required
+                <input type="text" id="comment-input-${post.id}" placeholder="Write a comment..." required maxlength="200"
                   class="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#1b2a63] shadow-inner">
                 <button type="submit" class="px-4 py-2 bg-[#1b2a63] hover:bg-[#131f4a] text-white text-xs font-bold rounded-xl transition-all shadow-sm">
                   Reply
@@ -588,12 +671,6 @@
           </div>
         `;
       }).join('');
-    }
-
-    function escapeHtml(str) {
-      return (str || '').replace(/[&<>"']/g, (m) => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
-      }[m]));
     }
 
     const q = query(confessionsRef, orderBy("timestamp", "desc"));
