@@ -18,7 +18,6 @@
       overflow-x: hidden;
     }
 
-    /* Live Animated Particle Background */
     #bgCanvas {
       position: fixed;
       top: 0;
@@ -77,6 +76,12 @@
       background: linear-gradient(135deg, #090d16 0%, #1e293b 100%);
       border: 1px solid rgba(51, 65, 85, 0.8);
     }
+
+    .dev-badge {
+      background: linear-gradient(135deg, #ff8c00 0%, #d97706 100%);
+      color: #ffffff;
+      box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased">
@@ -94,9 +99,9 @@
 
   <!-- Admin Active Banner -->
   <div id="adminBanner" class="hidden bg-gradient-to-r from-amber-600 to-orange-600 text-white text-xs font-bold py-2 px-4 text-center flex items-center justify-center gap-2 shadow-md z-40">
-    <i class="fa-solid fa-shield-halved text-sm animate-pulse"></i>
-    <span>ADMIN MODE ACTIVE — You can moderate and delete any post on the wall</span>
-    <button onclick="window.logoutAdmin()" class="underline ml-2 hover:text-slate-100 font-semibold cursor-pointer">Exit Admin Mode</button>
+    <i class="fa-solid fa-code text-sm animate-pulse"></i>
+    <span>DEVELOPER / ADMIN MODE ACTIVE — Moderation rights & Developer tag granted</span>
+    <button onclick="window.logoutAdmin()" class="underline ml-2 hover:text-slate-100 font-semibold cursor-pointer">Exit Mode</button>
   </div>
 
   <!-- Header -->
@@ -113,6 +118,9 @@
             <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight leading-none">
               <span class="text-blue-400">MOREH</span> <span class="text-[#ff8c00]">FREEDOM WALL</span>
             </h1>
+            <span id="devHeaderTag" class="hidden dev-badge text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase flex items-center gap-1 tracking-wider">
+              <i class="fa-solid fa-code text-[8px]"></i> Developer
+            </span>
           </div>
           <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mt-1.5">
             <p class="text-[11px] text-slate-400 font-medium">School of Righteousness & Excellence • Victoria, Laguna</p>
@@ -125,7 +133,7 @@
       </div>
 
       <div class="flex items-center gap-2.5 w-full sm:w-auto">
-        <button onclick="window.promptAdminLogin()" class="px-3.5 py-2 text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-sm border border-slate-700">
+        <button id="adminBtn" onclick="window.promptAdminLogin()" class="px-3.5 py-2 text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-700 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-sm border border-slate-700">
           <i class="fa-solid fa-shield-halved text-blue-400"></i>
           <span class="hidden sm:inline">Admin</span>
         </button>
@@ -325,7 +333,7 @@
       document.getElementById('onlineCount').textContent = `${count} online`;
     });
 
-    // Interactive Particle Background Animation
+    // Particle Background
     const canvas = document.getElementById('bgCanvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
@@ -401,9 +409,17 @@
       localStorage.setItem('my_reactions', JSON.stringify(reactions));
     };
 
-    if (isAdmin) {
-      document.getElementById('adminBanner').classList.remove('hidden');
+    function updateAdminUI() {
+      if (isAdmin) {
+        document.getElementById('adminBanner').classList.remove('hidden');
+        document.getElementById('devHeaderTag').classList.remove('hidden');
+      } else {
+        document.getElementById('adminBanner').classList.add('hidden');
+        document.getElementById('devHeaderTag').classList.add('hidden');
+      }
     }
+
+    updateAdminUI();
 
     window.openModal = () => document.getElementById('createModal').classList.remove('hidden');
     window.closeModal = () => {
@@ -418,12 +434,12 @@
     };
 
     window.promptAdminLogin = () => {
-      if (isAdmin) return alert("Admin Mode is active!");
+      if (isAdmin) return alert("Developer / Admin Mode is active!");
       const pass = prompt("Enter Admin Passcode:");
       if (pass === "bagayansam@42010") {
         isAdmin = true;
         localStorage.setItem('moreh_admin', 'true');
-        document.getElementById('adminBanner').classList.remove('hidden');
+        updateAdminUI();
         window.filterConfessions();
       } else if (pass !== null) {
         alert("Incorrect Admin Passcode!");
@@ -433,7 +449,7 @@
     window.logoutAdmin = () => {
       isAdmin = false;
       localStorage.removeItem('moreh_admin');
-      document.getElementById('adminBanner').classList.add('hidden');
+      updateAdminUI();
       window.filterConfessions();
     };
 
@@ -482,6 +498,8 @@
       }
 
       const authorSecretKey = 'key_' + Math.random().toString(36).substr(2, 9) + now;
+      const isDevPost = isAdmin; // Flag if post was submitted while in Admin/Dev mode
+
       const tempId = 'temp_' + now;
       const newPost = {
         id: tempId,
@@ -489,6 +507,7 @@
         category,
         content,
         authorSecretKey,
+        isDevPost,
         timestamp: now,
         reactions: { heart: 0, laugh: 0, fire: 0, thumbs: 0 },
         comments: []
@@ -505,6 +524,7 @@
           category,
           content,
           authorSecretKey,
+          isDevPost,
           timestamp: now,
           reactions: { heart: 0, laugh: 0, fire: 0, thumbs: 0 },
           comments: []
@@ -695,13 +715,14 @@
           <div class="glass-card rounded-2xl p-5 shadow-lg transition-all relative">
             <div class="flex items-center justify-between mb-3.5">
               <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-blue-600 to-indigo-800 text-white font-bold flex items-center justify-center text-xs shadow-md">
-                  ${(post.author || 'A')[0].toUpperCase()}
+                <div class="w-9 h-9 rounded-full ${post.isDevPost ? 'bg-gradient-to-br from-[#ff8c00] to-orange-600' : 'bg-gradient-to-br from-blue-600 to-indigo-800'} text-white font-bold flex items-center justify-center text-xs shadow-md">
+                  ${post.isDevPost ? '<i class="fa-solid fa-code"></i>' : (post.author || 'A')[0].toUpperCase()}
                 </div>
                 <div>
                   <h4 class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                     ${escapeHtml(post.author || 'Anonymous Student')}
-                    ${isOwner ? `<span class="text-[9px] bg-slate-800 text-slate-300 font-bold px-1.5 py-0.5 rounded border border-slate-700">You</span>` : ''}
+                    ${post.isDevPost ? `<span class="dev-badge text-[9px] font-extrabold px-1.5 py-0.5 rounded flex items-center gap-0.5"><i class="fa-solid fa-code text-[8px]"></i> Developer</span>` : ''}
+                    ${isOwner && !post.isDevPost ? `<span class="text-[9px] bg-slate-800 text-slate-300 font-bold px-1.5 py-0.5 rounded border border-slate-700">You</span>` : ''}
                   </h4>
                   <p class="text-[10px] text-slate-400 font-medium">${getRelativeTime(post.timestamp)}</p>
                 </div>
