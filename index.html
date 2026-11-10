@@ -246,8 +246,8 @@
       doc, 
       updateDoc, 
       deleteDoc,
+      runTransaction,
       arrayUnion, 
-      increment, 
       query, 
       orderBy 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -348,22 +348,6 @@
       const category = document.getElementById('categorySelect').value;
       const content = document.getElementById('contentInput').value.trim();
       const authorSecretKey = 'key_' + Math.random().toString(36).substr(2, 9) + Date.now();
-      const tempId = 'temp_' + Date.now();
-
-      const tempPost = {
-        id: tempId,
-        author,
-        category,
-        content,
-        authorSecretKey,
-        timestamp: Date.now(),
-        reactions: { heart: 0, laugh: 0, fire: 0, thumbs: 0 },
-        comments: []
-      };
-
-      allConfessions.unshift(tempPost);
-      window.closeModal();
-      window.filterConfessions();
 
       try {
         const docRef = await addDoc(confessionsRef, {
@@ -377,34 +361,44 @@
         });
 
         saveMyPostKey(docRef.id, authorSecretKey);
+        window.closeModal();
       } catch (err) {
         console.error("Error writing post to database: ", err);
-        allConfessions = allConfessions.filter(p => p.id !== tempId);
-        window.filterConfessions();
         alert("Network error: Could not save post to cloud.");
       }
     };
 
+    // Real-Time Transaction for Cross-Device Sync
     window.reactPost = async (id, type) => {
       const userReactions = getMyReactions();
-      const hasReacted = userReactions[id] && userReactions[id][type];
+      const hasReacted = !!(userReactions[id] && userReactions[id][type]);
       const delta = hasReacted ? -1 : 1;
 
-      const post = allConfessions.find(p => p.id === id);
-      if (post) {
-        if (!post.reactions) post.reactions = { heart: 0, laugh: 0, fire: 0, thumbs: 0 };
-        post.reactions[type] = Math.max(0, (post.reactions[type] || 0) + delta);
-        saveMyReaction(id, type, !hasReacted);
-        window.filterConfessions();
-      }
+      // Save active state locally for blue button highlight on this device
+      saveMyReaction(id, type, !hasReacted);
+      window.filterConfessions();
 
       try {
         const postRef = doc(db, "confessions", id);
-        await updateDoc(postRef, {
-          [`reactions.${type}`]: increment(delta)
+        await runTransaction(db, async (transaction) => {
+          const sfDoc = await transaction.get(postRef);
+          if (!sfDoc.exists()) return;
+
+          const data = sfDoc.data();
+          const currentReactions = data.reactions || { heart: 0, laugh: 0, fire: 0, thumbs: 0 };
+          const newCount = Math.max(0, (currentReactions[type] || 0) + delta);
+
+          transaction.update(postRef, {
+            reactions: {
+              ...currentReactions,
+              [type]: newCount
+            }
+          });
         });
       } catch (err) {
-        console.error("Error updating reaction: ", err);
+        console.error("Transaction failed: ", err);
+        saveMyReaction(id, type, hasReacted);
+        window.filterConfessions();
       }
     };
 
@@ -418,9 +412,6 @@
       }
 
       if (!confirm("Are you sure you want to delete this confession?")) return;
-
-      allConfessions = allConfessions.filter(p => p.id !== id);
-      window.filterConfessions();
 
       try {
         await deleteDoc(doc(db, "confessions", id));
@@ -441,13 +432,6 @@
       if (!text) return;
 
       const commentData = { text, timestamp: Date.now() };
-
-      const post = allConfessions.find(p => p.id === postId);
-      if (post) {
-        if (!post.comments) post.comments = [];
-        post.comments.push(commentData);
-        window.filterConfessions();
-      }
 
       try {
         const postRef = doc(db, "confessions", postId);
