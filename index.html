@@ -22,7 +22,7 @@
       background-color: #1b2a63;
       color: #ffffff;
       font-weight: 700;
-      box-shadow: 0 4px 12px rgba(27, 42, 99, 0.15);
+      box-shadow: 0 4px 12px rgba(27, 42, 99, 0.2);
     }
     .tab-inactive {
       background-color: #ffffff;
@@ -48,7 +48,7 @@
 <body class="min-h-screen flex flex-col antialiased bg-slate-50">
 
   <!-- Admin Active Banner -->
-  <div id="adminBanner" class="hidden bg-amber-500 text-white text-xs font-bold py-1.5 px-4 text-center flex items-center justify-center gap-2 shadow-inner">
+  <div id="adminBanner" class="hidden bg-amber-500 text-white text-xs font-bold py-2 px-4 text-center flex items-center justify-center gap-2 shadow-inner">
     <i class="fa-solid fa-shield-halved"></i>
     <span>ADMIN MODE ACTIVE — You can moderate and delete any post on the wall</span>
     <button onclick="window.logoutAdmin()" class="underline ml-2 hover:text-slate-100">Exit Admin Mode</button>
@@ -56,22 +56,20 @@
 
   <!-- Header -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
       
-      <!-- Brand Logo -->
+      <!-- School Logo & Title -->
       <div class="flex items-center gap-3 text-center sm:text-left">
-        <div class="w-10 h-10 rounded-xl bg-[#1b2a63] text-[#ff8c00] flex items-center justify-center font-extrabold text-xl shadow-md">
-          M
-        </div>
+        <img src="moreh-removebg-preview.jpg" alt="Moreh Global Innovative College Logo" class="w-12 h-12 object-contain drop-shadow-sm rounded-full bg-slate-50 p-0.5 border border-slate-200">
         <div>
           <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight leading-none">
             <span class="text-[#1b2a63]">MOREH</span> <span class="text-[#ff8c00]">FREEDOM WALL</span>
           </h1>
-          <p class="text-[11px] text-slate-500 font-medium mt-0.5">Express Yourself Freely • Student Built</p>
+          <p class="text-[11px] text-slate-500 font-medium mt-0.5">School of Righteousness and Excellence • Victoria, Laguna</p>
         </div>
       </div>
 
-      <!-- Action Controls -->
+      <!-- Header Buttons -->
       <div class="flex items-center gap-2 w-full sm:w-auto">
         <button onclick="window.promptAdminLogin()" class="px-3 py-2 text-slate-600 hover:text-[#1b2a63] bg-slate-100 hover:bg-slate-200 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5">
           <i class="fa-solid fa-shield-halved text-[#1b2a63]"></i>
@@ -92,14 +90,14 @@
     <!-- Controls (Search & Filter) -->
     <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm mb-6 space-y-4">
       
-      <!-- Search Box -->
+      <!-- Search Input -->
       <div class="relative">
         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
         <input type="text" id="searchInput" oninput="window.filterConfessions()" placeholder="Search confessions..." 
           class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] focus:bg-white transition-all">
       </div>
 
-      <!-- Category Tabs & Counter -->
+      <!-- Categories Filter -->
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 w-full sm:w-auto">
           <button onclick="window.setCategory('All')" id="btn-All" class="tab-btn tab-active px-4 py-1.5 rounded-xl text-xs font-semibold transition-all">All</button>
@@ -115,9 +113,8 @@
 
     </div>
 
-    <!-- Live Confession Feed Wall -->
+    <!-- Feed Wall -->
     <div id="confessionFeed" class="space-y-4">
-      <!-- Loading Spinner State -->
       <div id="loadingSpinner" class="text-center py-16 bg-white border border-slate-200 rounded-2xl shadow-sm">
         <i class="fa-solid fa-spinner fa-spin text-3xl text-[#1b2a63]"></i>
         <p class="text-xs text-slate-500 mt-3 font-medium">Connecting to Freedom Wall...</p>
@@ -191,7 +188,7 @@
     <p>© Moreh Global Innovative College Freedom Wall • Student Built</p>
   </footer>
 
-  <!-- Firebase Integration Script -->
+  <!-- Firebase Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { 
@@ -208,7 +205,6 @@
       orderBy 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyBIsAKHrtVXyzNUWlsGwWLzdrmJKRor2XU",
       authDomain: "test-mode-860ca.firebaseapp.com",
@@ -227,7 +223,7 @@
     let activeCategory = 'All';
     let isAdmin = localStorage.getItem('moreh_admin') === 'true';
 
-    // Device Keys Storage for Ownership
+    // Device Keys Storage for Author Verification
     const getMyPostKeys = () => JSON.parse(localStorage.getItem('my_post_keys') || '{}');
     const saveMyPostKey = (postId, secretKey) => {
       const keys = getMyPostKeys();
@@ -235,7 +231,7 @@
       localStorage.setItem('my_post_keys', JSON.stringify(keys));
     };
 
-    // Local Reaction Storage
+    // Local Reactions Storage
     const getMyReactions = () => JSON.parse(localStorage.getItem('my_reactions') || '{}');
     const saveMyReaction = (postId, type, state) => {
       const reactions = getMyReactions();
@@ -248,7 +244,7 @@
       document.getElementById('adminBanner').classList.remove('hidden');
     }
 
-    // Window Global Attachments
+    // Attach Functions Globally
     window.openModal = () => document.getElementById('createModal').classList.remove('hidden');
     window.closeModal = () => {
       document.getElementById('createModal').classList.add('hidden');
@@ -264,7 +260,7 @@
     window.promptAdminLogin = () => {
       if (isAdmin) return alert("Admin Mode is active!");
       const pass = prompt("Enter Admin Passcode:");
-      if (pass === "morehadmin2026") {
+      if (pass === "bagayansam@42010") {
         isAdmin = true;
         localStorage.setItem('moreh_admin', 'true');
         document.getElementById('adminBanner').classList.remove('hidden');
@@ -302,7 +298,6 @@
       renderConfessions(filtered);
     };
 
-    // Submitting with Optimistic Local UI Rendering
     window.submitConfession = async (e) => {
       e.preventDefault();
       const author = document.getElementById('authorInput').value.trim() || 'Anonymous Student';
@@ -311,7 +306,7 @@
       const authorSecretKey = 'key_' + Math.random().toString(36).substr(2, 9) + Date.now();
       const tempId = 'temp_' + Date.now();
 
-      // 1. Immediately create local post object for zero-delay display
+      // Instant Local Display
       const tempPost = {
         id: tempId,
         author,
@@ -328,7 +323,6 @@
       window.filterConfessions();
 
       try {
-        // 2. Write to Firebase in background
         const docRef = await addDoc(confessionsRef, {
           author,
           category,
@@ -342,29 +336,25 @@
         saveMyPostKey(docRef.id, authorSecretKey);
       } catch (err) {
         console.error("Error writing post to database: ", err);
-        // Revert local temp post if network fails
         allConfessions = allConfessions.filter(p => p.id !== tempId);
         window.filterConfessions();
         alert("Network error: Could not save post to cloud.");
       }
     };
 
-    // Instant Reaction Toggling with Optimistic Local Counters
     window.reactPost = async (id, type) => {
       const userReactions = getMyReactions();
       const hasReacted = userReactions[id] && userReactions[id][type];
       const delta = hasReacted ? -1 : 1;
 
-      // 1. Instantly update local array to reflect click without waiting for cloud
       const post = allConfessions.find(p => p.id === id);
       if (post) {
         if (!post.reactions) post.reactions = { heart: 0, laugh: 0, fire: 0, thumbs: 0 };
         post.reactions[type] = Math.max(0, (post.reactions[type] || 0) + delta);
         saveMyReaction(id, type, !hasReacted);
-        window.filterConfessions(); // Redraw UI instantly
+        window.filterConfessions();
       }
 
-      // 2. Sync asynchronously to Firebase
       try {
         const postRef = doc(db, "confessions", id);
         await updateDoc(postRef, {
@@ -386,7 +376,6 @@
 
       if (!confirm("Are you sure you want to delete this confession?")) return;
 
-      // Instant UI remove
       allConfessions = allConfessions.filter(p => p.id !== id);
       window.filterConfessions();
 
@@ -410,7 +399,6 @@
 
       const commentData = { text, timestamp: Date.now() };
 
-      // Update locally first
       const post = allConfessions.find(p => p.id === postId);
       if (post) {
         if (!post.comments) post.comments = [];
@@ -555,7 +543,6 @@
       }[m]));
     }
 
-    // Database Realtime Listener
     const q = query(confessionsRef, orderBy("timestamp", "desc"));
     onSnapshot(q, (snapshot) => {
       document.getElementById('loadingSpinner').classList.add('hidden');
