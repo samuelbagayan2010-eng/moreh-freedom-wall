@@ -3,151 +3,257 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moreh Freedom Wall</title>
+  <title>Moreh Global — Freedom Wall</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            moreh: {
+              navy: '#1b2a63',
+              navyHover: '#131e47',
+              orange: '#ff8c00',
+              orangeHover: '#e07b00',
+              bg: '#f8fafc',
+              border: '#e2e8f0',
+              card: '#ffffff'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: #f8fafc;
       color: #0f172a;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    .moreh-navy { color: #1b2a63; }
-    .moreh-orange { color: #ff8c00; }
-    .bg-moreh-navy { background-color: #1b2a63; }
-    .bg-moreh-orange { background-color: #ff8c00; }
-    .border-moreh-orange { border-color: #ff8c00; }
-    .border-moreh-navy { border-color: #1b2a63; }
-    
+
+    .glass-nav {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .confession-card {
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .confession-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -6px rgba(27, 42, 99, 0.08), 0 4px 8px -4px rgba(0, 0, 0, 0.04);
+    }
+
     .tab-active {
       background-color: #1b2a63;
       color: #ffffff;
-      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(27, 42, 99, 0.15);
     }
     .tab-inactive {
       background-color: #ffffff;
-      color: #475569;
+      color: #64748b;
       border: 1px solid #e2e8f0;
     }
     .tab-inactive:hover {
       background-color: #f1f5f9;
+      color: #1b2a63;
+    }
+
+    .btn-react {
+      transition: all 0.15s ease-in-out;
+    }
+    .btn-react:active {
+      transform: scale(0.92);
+    }
+    .btn-react.reacted {
+      background-color: #fff7ed;
+      border-color: #ff8c00;
+      color: #ea580c;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased bg-slate-50">
+<body class="min-h-screen flex flex-col justify-between antialiased">
+
+  <!-- Top Disclaimer Notice -->
+  <div class="bg-[#1b2a63] text-white text-center py-2 px-4 text-xs font-semibold flex items-center justify-center gap-2 shadow-sm">
+    <i class="fa-solid fa-shield-halved text-[#ff8c00]"></i>
+    <span>Moreh Global Student Freedom Wall • Express Yourself Respectfully</span>
+  </div>
+
+  <!-- Admin Active Banner (Hidden by default) -->
+  <div id="adminBanner" class="hidden bg-amber-500 text-white text-center py-1.5 px-4 text-xs font-bold flex items-center justify-center gap-2 shadow-md">
+    <i class="fa-solid fa-user-shield"></i>
+    <span>ADMIN MODE ACTIVE — You can moderate and delete any post</span>
+    <button onclick="toggleAdminMode()" class="underline ml-2 hover:text-slate-100">(Log Out Admin)</button>
+  </div>
 
   <!-- Header -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <div class="flex items-center gap-3 text-center sm:text-left">
-        <div class="w-10 h-10 rounded-full bg-moreh-navy text-moreh-orange flex items-center justify-center font-bold text-xl shadow-md">
-          <i class="fa-solid font-bold">M</i>
+  <header class="sticky top-0 z-30 glass-nav border-b border-slate-200 shadow-sm">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-3">
+      <!-- Title & Branding -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-[#1b2a63] text-[#ff8c00] flex items-center justify-center font-extrabold text-xl shadow-md border border-slate-200">
+          M
         </div>
         <div>
-          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight">
-            <span class="text-[#1b2a63]">MOREH</span> <span class="text-[#ff8c00]">FREEDOM WALL</span>
+          <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-[#1b2a63]">
+            MOREH <span class="text-[#ff8c00]">FREEDOM WALL</span>
           </h1>
-          <p class="text-xs text-slate-500 font-medium">Educational & Entertainment Purpose • Express Yourself Freely</p>
+          <p class="text-[11px] text-slate-500 font-medium">Moreh Global Innovative College • Victoria, Laguna</p>
         </div>
       </div>
 
-      <div class="w-full sm:w-auto">
-        <button onclick="openModal()" class="w-full sm:w-auto px-5 py-2.5 bg-[#ff8c00] hover:bg-[#e07b00] text-white font-bold text-sm rounded-xl shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2">
-          <i class="fa-solid fa-[#ffffff] fa-pen-to-square"></i> Create Confession
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2">
+        <button onclick="openAdminModal()" id="adminNavBtn" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1.5" title="Admin Login">
+          <i class="fa-solid fa-user-shield text-[#1b2a63]"></i>
+          <span class="hidden sm:inline" id="adminBtnLabel">Admin</span>
+        </button>
+        <button onclick="openModal()" class="px-4 py-2.5 bg-[#ff8c00] hover:bg-[#e07b00] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span>Post Confession</span>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
-  <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full">
-    
-    <!-- Controls (Search & Filter) -->
-    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm mb-6 space-y-4">
-      <!-- Search Input -->
-      <div class="relative">
-        <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
-        <input type="text" id="searchInput" oninput="filterConfessions()" placeholder="Search confessions..." 
-          class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] focus:bg-white transition-all">
-      </div>
+  <!-- Main Content Container -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full">
 
-      <!-- Categories Filter -->
-      <div class="flex flex-wrap items-center justify-between gap-2">
-        <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 w-full sm:w-auto">
-          <button onclick="setCategory('All')" id="btn-All" class="tab-btn tab-active px-4 py-1.5 rounded-lg text-xs font-semibold transition-all">All</button>
-          <button onclick="setCategory('General')" id="btn-General" class="tab-btn tab-inactive px-4 py-1.5 rounded-lg text-xs font-semibold transition-all">General</button>
-          <button onclick="setCategory('Crush')" id="btn-Crush" class="tab-btn tab-inactive px-4 py-1.5 rounded-lg text-xs font-semibold transition-all">Crush 💕</button>
-          <button onclick="setCategory('Shoutouts')" id="btn-Shoutouts" class="tab-btn tab-inactive px-4 py-1.5 rounded-lg text-xs font-semibold transition-all">Shoutouts 📢</button>
+    <!-- Hero Header -->
+    <div class="text-center mb-6">
+      <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1b2a63] tracking-tight">
+        Student <span class="text-[#ff8c00]">Confessions & Shoutouts</span>
+      </h2>
+      <p class="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mt-1">
+        Post thoughts, crush messages, and campus shoutouts 100% anonymously.
+      </p>
+    </div>
+
+    <!-- Controls: Search & Category Filter Chips -->
+    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm mb-6 space-y-3">
+      <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+        
+        <!-- Search Input -->
+        <div class="relative w-full sm:w-80">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="searchInput" oninput="filterConfessions()" placeholder="Search confessions..." 
+            class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#1b2a63] focus:bg-white transition-all">
         </div>
-        <div class="text-xs text-slate-400 font-medium">
-          Total Posts: <span id="postCount" class="font-bold text-slate-700">0</span>
+
+        <!-- Category Filter Buttons -->
+        <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+          <button onclick="setCategory('All')" id="btn-All" class="tab-btn tab-active px-3.5 py-1.5 rounded-xl text-xs font-bold transition">All</button>
+          <button onclick="setCategory('General')" id="btn-General" class="tab-btn tab-inactive px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">📌 General</button>
+          <button onclick="setCategory('Crush')" id="btn-Crush" class="tab-btn tab-inactive px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">💕 Crush</button>
+          <button onclick="setCategory('Shoutouts')" id="btn-Shoutouts" class="tab-btn tab-inactive px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">📢 Shoutouts</button>
         </div>
+
+      </div>
+      <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-[11px] text-slate-500 font-medium">
+        <span>Showing <strong id="visibleCount" class="text-slate-800">0</strong> posts</span>
+        <span>Total Confessions: <strong id="postCount" class="text-[#1b2a63]">0</strong></span>
       </div>
     </div>
 
-    <!-- Feed Wall -->
-    <div id="confessionFeed" class="space-y-4">
-      <!-- Loading Spinner -->
-      <div id="loadingSpinner" class="text-center py-12">
+    <!-- Feed Grid -->
+    <div id="confessionFeed" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Loading State -->
+      <div id="loadingSpinner" class="col-span-full text-center py-16">
         <i class="fa-solid fa-spinner fa-spin text-3xl text-[#1b2a63]"></i>
-        <p class="text-sm text-slate-500 mt-2 font-medium">Connecting to Freedom Wall...</p>
+        <p class="text-xs text-slate-500 mt-3 font-medium">Connecting to Freedom Wall live feed...</p>
       </div>
     </div>
 
     <!-- Empty Feed State -->
-    <div id="emptyFeed" class="hidden text-center py-16 bg-white border border-dashed border-slate-300 rounded-2xl p-6">
-      <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400 text-2xl">
+    <div id="emptyFeed" class="hidden text-center py-16 bg-white border border-dashed border-slate-300 rounded-2xl p-6 my-4">
+      <div class="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400 text-xl">
         <i class="fa-solid fa-comment-dots"></i>
       </div>
-      <h3 class="text-base font-bold text-slate-800">No confessions found</h3>
-      <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1">Be the first student to post anonymously on the wall!</p>
-      <button onclick="openModal()" class="mt-4 px-4 py-2 bg-[#1b2a63] text-white text-xs font-bold rounded-xl shadow-sm hover:bg-[#131f4a] transition-all">
-        Post Now
+      <h3 class="text-sm font-bold text-slate-800">No confessions found</h3>
+      <p class="text-xs text-slate-500 max-w-xs mx-auto mt-1">Be the first student to post anonymously on the wall!</p>
+      <button onclick="openModal()" class="mt-4 px-4 py-2 bg-[#1b2a63] text-white text-xs font-bold rounded-xl shadow-sm hover:bg-[#131e47] transition">
+        Create Post
       </button>
     </div>
 
   </main>
 
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500 mt-8">
+    <div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+      <p>© Moreh Global Innovative College Freedom Wall</p>
+      <div class="flex items-center gap-3">
+        <button onclick="openAdminModal()" class="text-slate-400 hover:text-[#1b2a63] text-[11px] font-semibold transition">
+          <i class="fa-solid fa-lock"></i> Moderator Access
+        </button>
+      </div>
+    </div>
+  </footer>
+
   <!-- Create Confession Modal -->
   <div id="createModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
       <div class="bg-[#1b2a63] text-white p-4 flex items-center justify-between">
-        <h3 class="font-bold text-base flex items-center gap-2">
-          <i class="fa-solid fa-pen-nib text-[#ff8c00]"></i> Write Confession
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-paper-plane text-[#ff8c00]"></i> Write Anonymous Confession
         </h3>
-        <button onclick="closeModal()" class="text-slate-300 hover:text-white text-lg w-8 h-8 rounded-full flex items-center justify-center hover:bg-white/10 transition-all">&times;</button>
+        <button onclick="closeModal()" class="text-slate-300 hover:text-white text-base w-7 h-7 rounded-full flex items-center justify-center hover:bg-white/10">&times;</button>
       </div>
       
       <form id="confessionForm" onsubmit="submitConfession(event)" class="p-5 space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Pseudonym (Optional)</label>
-          <input type="text" id="authorInput" placeholder="e.g. Secret Student, Grade 11, BSIT Boy" 
-            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63]">
+          <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Pseudonym / Nickname (Optional)</label>
+          <input type="text" id="authorInput" placeholder="e.g. Secret Innovator, BSIT 1st Year" 
+            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#1b2a63]">
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Category *</label>
-          <select id="categorySelect" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63]">
-            <option value="General">General</option>
-            <option value="Crush">Crush 💕</option>
-            <option value="Shoutouts">Shoutouts 📢</option>
+          <select id="categorySelect" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#1b2a63]">
+            <option value="General">📌 General</option>
+            <option value="Crush">💕 Crush</option>
+            <option value="Shoutouts">📢 Shoutouts</option>
           </select>
         </div>
 
         <div>
           <div class="flex justify-between items-center mb-1">
-            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Confession Content *</label>
+            <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Confession *</label>
             <span id="charCounter" class="text-[10px] text-slate-400 font-semibold">0 / 500</span>
           </div>
-          <textarea id="contentInput" required maxlength="500" rows="4" oninput="updateCharCounter()" placeholder="Write your thoughts anonymously..." 
-            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] resize-none"></textarea>
+          <textarea id="contentInput" required maxlength="500" rows="4" oninput="updateCharCounter()" placeholder="Express yourself freely..." 
+            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#1b2a63] resize-none"></textarea>
         </div>
 
         <div class="pt-2 flex items-center justify-end gap-2">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 border border-slate-200 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-100 transition-all">Cancel</button>
-          <button type="submit" id="submitBtn" class="px-5 py-2 bg-[#ff8c00] hover:bg-[#e07b00] text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-2">
-            <span>Post Anonymously</span>
+          <button type="button" onclick="closeModal()" class="px-4 py-2 border border-slate-200 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-100">Cancel</button>
+          <button type="submit" id="submitBtn" class="px-5 py-2 bg-[#ff8c00] hover:bg-[#e07b00] text-white text-xs font-bold rounded-xl shadow-md transition flex items-center gap-2">
+            <span>Post Now</span>
             <i class="fa-solid fa-paper-plane"></i>
           </button>
         </div>
@@ -155,10 +261,30 @@
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
-    <p>© Moreh Global Innovative College Freedom Wall • Student Built</p>
-  </footer>
+  <!-- Admin Login Modal -->
+  <div id="adminModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-white w-full max-w-xs rounded-2xl shadow-2xl border border-slate-100 overflow-hidden">
+      <div class="bg-[#1b2a63] text-white p-4 flex items-center justify-between">
+        <h3 class="font-bold text-sm flex items-center gap-2">
+          <i class="fa-solid fa-user-shield text-[#ff8c00]"></i> Admin Login
+        </h3>
+        <button onclick="closeAdminModal()" class="text-slate-300 hover:text-white text-base w-7 h-7 rounded-full flex items-center justify-center hover:bg-white/10">&times;</button>
+      </div>
+
+      <form onsubmit="submitAdminPasscode(event)" class="p-5 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Enter Admin Passcode</label>
+          <input type="password" id="adminPasscode" placeholder="Enter passcode..." required 
+            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-2 focus:ring-[#1b2a63]">
+          <p class="text-[10px] text-slate-400 mt-1">Default passcode: <code class="bg-slate-100 px-1 rounded">bagayansam@42010</code></p>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeAdminModal()" class="px-3 py-1.5 border border-slate-200 text-slate-600 text-xs font-bold rounded-xl">Cancel</button>
+          <button type="submit" class="px-4 py-1.5 bg-[#1b2a63] hover:bg-[#131e47] text-white text-xs font-bold rounded-xl shadow-sm">Unlock Admin</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Firebase Integration Script -->
   <script type="module">
@@ -167,6 +293,7 @@
       getFirestore, 
       collection, 
       addDoc, 
+      deleteDoc, 
       onSnapshot, 
       doc, 
       updateDoc, 
@@ -176,7 +303,7 @@
       orderBy 
     } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Your Exact Firebase Configuration
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBIsAKHrtVXyzNUWlsGwWLzdrmJKRor2XU",
       authDomain: "test-mode-860ca.firebaseapp.com",
@@ -187,21 +314,77 @@
       measurementId: "G-QY6J1RX8SF"
     };
 
-    // Initialize Firebase Services
+    // App Initialization
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const confessionsRef = collection(db, "confessions");
 
     let allConfessions = [];
     let activeCategory = 'All';
+    let isAdmin = localStorage.getItem('moreh_admin_logged') === 'true';
 
-    // Global Functions Attached to Window
+    // Local Reaction & Ownership Tokens
+    function getMyReactions() {
+      try { return JSON.parse(localStorage.getItem('moreh_my_reactions') || '{}'); } catch(e) { return {}; }
+    }
+    function saveMyReactions(data) {
+      localStorage.setItem('moreh_my_reactions', JSON.stringify(data));
+    }
+    function getMyAuthorKeys() {
+      try { return JSON.parse(localStorage.getItem('moreh_my_author_keys') || '{}'); } catch(e) { return {}; }
+    }
+    function saveMyAuthorKeys(data) {
+      localStorage.setItem('moreh_my_author_keys', JSON.stringify(data));
+    }
+
+    // Modal Control
     window.openModal = () => document.getElementById('createModal').classList.remove('hidden');
     window.closeModal = () => {
       document.getElementById('createModal').classList.add('hidden');
       document.getElementById('confessionForm').reset();
       updateCharCounter();
     };
+
+    window.openAdminModal = () => {
+      if(isAdmin) {
+        if(confirm("Do you want to log out of Admin mode?")) {
+          toggleAdminMode(false);
+        }
+      } else {
+        document.getElementById('adminModal').classList.remove('hidden');
+      }
+    };
+    window.closeAdminModal = () => document.getElementById('adminModal').classList.add('hidden');
+
+    window.submitAdminPasscode = (e) => {
+      e.preventDefault();
+      const code = document.getElementById('adminPasscode').value;
+      if(code === "morehadmin2026") {
+        toggleAdminMode(true);
+        closeAdminModal();
+      } else {
+        alert("Incorrect passcode!");
+      }
+    };
+
+    function toggleAdminMode(enable) {
+      isAdmin = enable;
+      localStorage.setItem('moreh_admin_logged', enable ? 'true' : 'false');
+      const banner = document.getElementById('adminBanner');
+      const btnLabel = document.getElementById('adminBtnLabel');
+      
+      if(enable) {
+        banner.classList.remove('hidden');
+        if(btnLabel) btnLabel.textContent = "Admin (Active)";
+      } else {
+        banner.classList.add('hidden');
+        if(btnLabel) btnLabel.textContent = "Admin";
+      }
+      filterConfessions();
+    }
+
+    // Init Admin Banner State
+    if(isAdmin) toggleAdminMode(true);
 
     window.updateCharCounter = () => {
       const len = document.getElementById('contentInput').value.length;
@@ -211,10 +394,10 @@
     window.setCategory = (cat) => {
       activeCategory = cat;
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.className = 'tab-btn tab-inactive px-4 py-1.5 rounded-lg text-xs font-semibold transition-all';
+        btn.className = 'tab-btn tab-inactive px-3.5 py-1.5 rounded-xl text-xs font-semibold transition';
       });
       const activeBtn = document.getElementById(`btn-${cat}`);
-      if(activeBtn) activeBtn.className = 'tab-btn tab-active px-4 py-1.5 rounded-lg text-xs font-semibold transition-all';
+      if(activeBtn) activeBtn.className = 'tab-btn tab-active px-3.5 py-1.5 rounded-xl text-xs font-bold transition';
       filterConfessions();
     };
 
@@ -229,6 +412,7 @@
       renderConfessions(filtered);
     };
 
+    // Create New Confession
     window.submitConfession = async (e) => {
       e.preventDefault();
       const submitBtn = document.getElementById('submitBtn');
@@ -238,34 +422,83 @@
       const author = document.getElementById('authorInput').value.trim() || 'Anonymous Student';
       const category = document.getElementById('categorySelect').value;
       const content = document.getElementById('contentInput').value.trim();
+      const authorToken = 'ak_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
 
       try {
-        await addDoc(confessionsRef, {
+        const docRef = await addDoc(confessionsRef, {
           author,
           category,
           content,
+          authorToken,
           timestamp: Date.now(),
           reactions: { heart: 0, laugh: 0, fire: 0, thumbs: 0 },
           comments: []
         });
+
+        // Store author ownership token locally
+        const keys = getMyAuthorKeys();
+        keys[docRef.id] = authorToken;
+        saveMyAuthorKeys(keys);
+
         closeModal();
       } catch (err) {
-        console.error("Error writing document: ", err);
-        alert("Failed to submit confession. Make sure your Firestore security rules are set to public allow read, write: if true;");
+        console.error("Submission Error: ", err);
+        alert("Failed to post confession. Make sure your Firestore Security Rules are set to public test mode.");
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = `<span>Post Anonymously</span><i class="fa-solid fa-paper-plane"></i>`;
+        submitBtn.innerHTML = `<span>Post Now</span><i class="fa-solid fa-paper-plane"></i>`;
       }
     };
 
-    window.reactPost = async (id, type) => {
+    // Toggle Reaction (ON/OFF)
+    window.reactPost = async (postId, type) => {
+      const myReactions = getMyReactions();
+      const postReactions = myReactions[postId] || {};
+      const isAlreadyReacted = !!postReactions[type];
+
+      // Update Local State first
+      if (isAlreadyReacted) {
+        delete postReactions[type];
+      } else {
+        postReactions[type] = true;
+      }
+      myReactions[postId] = postReactions;
+      saveMyReactions(myReactions);
+
+      // Sync Firestore Count (+1 or -1)
       try {
-        const postRef = doc(db, "confessions", id);
+        const postRef = doc(db, "confessions", postId);
         await updateDoc(postRef, {
-          [`reactions.${type}`]: increment(1)
+          [`reactions.${type}`]: increment(isAlreadyReacted ? -1 : 1)
         });
       } catch (err) {
-        console.error("Error reacting: ", err);
+        console.error("Reaction Error: ", err);
+      }
+    };
+
+    // Delete Confession (Author-only OR Admin)
+    window.deleteConfession = async (postId) => {
+      const authorKeys = getMyAuthorKeys();
+      const postDoc = allConfessions.find(p => p.id === postId);
+      
+      const isAuthor = postDoc && authorKeys[postId] && authorKeys[postId] === postDoc.authorToken;
+      
+      if (!isAuthor && !isAdmin) {
+        alert("Permission denied. You can only delete your own confessions!");
+        return;
+      }
+
+      const confirmMsg = isAdmin 
+        ? "ADMIN ACTION: Delete this post permanently?" 
+        : "Are you sure you want to delete your confession?";
+
+      if (confirm(confirmMsg)) {
+        try {
+          await deleteDoc(doc(db, "confessions", postId));
+        } catch (err) {
+          console.error("Delete Error: ", err);
+          alert("Failed to delete confession.");
+        }
       }
     };
 
@@ -292,15 +525,16 @@
         });
         input.value = '';
       } catch (err) {
-        console.error("Error commenting: ", err);
+        console.error("Comment Error: ", err);
       }
     };
 
-    // Relative Time Formatter
+    // Relative Time Calculator
     function getRelativeTime(timestamp) {
       if (!timestamp) return 'Just now';
       const seconds = Math.floor((Date.now() - timestamp) / 1000);
-      if (seconds < 60) return 'Just now';
+      if (seconds < 30) return 'Just now';
+      if (seconds < 60) return `${seconds}s ago`;
       const minutes = Math.floor(seconds / 60);
       if (minutes < 60) return `${minutes}m ago`;
       const hours = Math.floor(minutes / 60);
@@ -309,11 +543,15 @@
       return `${days}d ago`;
     }
 
-    // Render Confession Cards
+    // Render Feed Grid
     function renderConfessions(posts) {
       const feed = document.getElementById('confessionFeed');
       const emptyState = document.getElementById('emptyFeed');
-      document.getElementById('postCount').textContent = posts.length;
+      const authorKeys = getMyAuthorKeys();
+      const myReactions = getMyReactions();
+
+      document.getElementById('postCount').textContent = allConfessions.length;
+      document.getElementById('visibleCount').textContent = posts.length;
 
       if (posts.length === 0) {
         feed.innerHTML = '';
@@ -322,100 +560,115 @@
       }
 
       emptyState.classList.add('hidden');
-      
+
       feed.innerHTML = posts.map(post => {
         const reactions = post.reactions || { heart: 0, laugh: 0, fire: 0, thumbs: 0 };
         const comments = post.comments || [];
+        const isAuthor = authorKeys[post.id] && authorKeys[post.id] === post.authorToken;
+        const canDelete = isAuthor || isAdmin;
+
+        const userReacted = myReactions[post.id] || {};
+
         const categoryBadgeClass = 
-          post.category === 'Crush' ? 'bg-pink-100 text-pink-700' :
-          post.category === 'Shoutouts' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700';
+          post.category === 'Crush' ? 'bg-pink-50 text-pink-700 border-pink-200' :
+          post.category === 'Shoutouts' ? 'bg-amber-50 text-amber-700 border-amber-200' : 'bg-blue-50 text-blue-700 border-blue-200';
 
         return `
-          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all">
-            <!-- Card Header -->
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-full bg-slate-100 text-[#1b2a63] font-bold flex items-center justify-center text-xs">
-                  ${(post.author || 'A')[0].toUpperCase()}
-                </div>
-                <div>
-                  <h4 class="text-xs font-bold text-slate-800">${escapeHtml(post.author || 'Anonymous Student')}</h4>
-                  <p class="text-[10px] text-slate-400 font-medium">${getRelativeTime(post.timestamp)}</p>
-                </div>
-              </div>
-              <span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${categoryBadgeClass}">
-                ${post.category}
-              </span>
-            </div>
-
-            <!-- Content -->
-            <p class="text-slate-700 text-sm sm:text-base leading-relaxed whitespace-pre-line mb-4 font-normal">
-              ${escapeHtml(post.content)}
-            </p>
-
-            <!-- Actions Bar -->
-            <div class="flex flex-wrap items-center justify-between border-t border-slate-100 pt-3 gap-2">
-              <!-- Reactions -->
-              <div class="flex items-center gap-1">
-                <button onclick="reactPost('${post.id}', 'heart')" class="px-2.5 py-1 rounded-lg hover:bg-slate-100 text-slate-600 text-xs font-semibold flex items-center gap-1 transition-all">
-                  ❤️ <span>${reactions.heart || 0}</span>
-                </button>
-                <button onclick="reactPost('${post.id}', 'laugh')" class="px-2.5 py-1 rounded-lg hover:bg-slate-100 text-slate-600 text-xs font-semibold flex items-center gap-1 transition-all">
-                  😂 <span>${reactions.laugh || 0}</span>
-                </button>
-                <button onclick="reactPost('${post.id}', 'thumbs')" class="px-2.5 py-1 rounded-lg hover:bg-slate-100 text-slate-600 text-xs font-semibold flex items-center gap-1 transition-all">
-                  👍 <span>${reactions.thumbs || 0}</span>
-                </button>
-                <button onclick="reactPost('${post.id}', 'fire')" class="px-2.5 py-1 rounded-lg hover:bg-slate-100 text-slate-600 text-xs font-semibold flex items-center gap-1 transition-all">
-                  🔥 <span>${reactions.fire || 0}</span>
-                </button>
-              </div>
-
-              <!-- Comment Toggle -->
-              <button onclick="toggleComments('${post.id}')" class="text-slate-500 hover:text-[#1b2a63] text-xs font-bold flex items-center gap-1.5 px-2 py-1 transition-all">
-                <i class="fa-regular fa-comment"></i>
-                <span>${comments.length} Comments</span>
-              </button>
-            </div>
-
-            <!-- Comments Drawer -->
-            <div id="comments-drawer-${post.id}" class="hidden border-t border-slate-100 mt-3 pt-3 space-y-3">
-              <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
-                ${comments.length === 0 ? `<p class="text-[11px] text-slate-400 italic">No comments yet. Say something nice!</p>` : ''}
-                ${comments.map(c => `
-                  <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
-                    <p class="text-xs text-slate-700">${escapeHtml(c.text)}</p>
-                    <span class="text-[9px] text-slate-400 font-medium">${getRelativeTime(c.timestamp)}</span>
+          <div class="confession-card bg-white rounded-2xl border border-slate-200 p-5 flex flex-col justify-between shadow-sm relative">
+            
+            <div>
+              <!-- Card Header -->
+              <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-full bg-[#1b2a63] text-white font-bold flex items-center justify-center text-xs shadow-sm">
+                    ${(post.author || 'A')[0].toUpperCase()}
                   </div>
-                `).join('')}
+                  <div>
+                    <h4 class="text-xs font-bold text-slate-800">${escapeHtml(post.author || 'Anonymous Student')}</h4>
+                    <p class="text-[10px] text-slate-400 font-medium">${getRelativeTime(post.timestamp)}</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${categoryBadgeClass}">
+                    ${post.category}
+                  </span>
+                  ${canDelete ? `
+                    <button onclick="deleteConfession('${post.id}')" title="${isAdmin && !isAuthor ? 'Admin Delete' : 'Delete Your Post'}" class="w-7 h-7 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center text-xs transition">
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+                  ` : ''}
+                </div>
               </div>
 
-              <!-- Add Comment Input -->
-              <form onsubmit="addComment(event, '${post.id}')" class="flex gap-2 pt-1">
-                <input type="text" id="comment-input-${post.id}" placeholder="Write a comment..." required
-                  class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#1b2a63]">
-                <button type="submit" class="px-3 py-1.5 bg-[#1b2a63] hover:bg-[#131f4a] text-white text-xs font-bold rounded-xl transition-all">
-                  Reply
+              <!-- Content Body -->
+              <p class="text-slate-700 text-xs sm:text-sm leading-relaxed whitespace-pre-line mb-4">
+                ${escapeHtml(post.content)}
+              </p>
+            </div>
+
+            <!-- Card Actions -->
+            <div class="border-t border-slate-100 pt-3">
+              <div class="flex flex-wrap items-center justify-between gap-1">
+                
+                <!-- Reaction Buttons -->
+                <div class="flex items-center gap-1">
+                  <button onclick="reactPost('${post.id}', 'heart')" class="btn-react ${userReacted.heart ? 'reacted' : 'bg-slate-50 border-slate-200 text-slate-600'} px-2 py-1 rounded-lg border text-xs font-semibold flex items-center gap-1">
+                    ❤️ <span>${reactions.heart || 0}</span>
+                  </button>
+                  <button onclick="reactPost('${post.id}', 'laugh')" class="btn-react ${userReacted.laugh ? 'reacted' : 'bg-slate-50 border-slate-200 text-slate-600'} px-2 py-1 rounded-lg border text-xs font-semibold flex items-center gap-1">
+                    😂 <span>${reactions.laugh || 0}</span>
+                  </button>
+                  <button onclick="reactPost('${post.id}', 'thumbs')" class="btn-react ${userReacted.thumbs ? 'reacted' : 'bg-slate-50 border-slate-200 text-slate-600'} px-2 py-1 rounded-lg border text-xs font-semibold flex items-center gap-1">
+                    👍 <span>${reactions.thumbs || 0}</span>
+                  </button>
+                  <button onclick="reactPost('${post.id}', 'fire')" class="btn-react ${userReacted.fire ? 'reacted' : 'bg-slate-50 border-slate-200 text-slate-600'} px-2 py-1 rounded-lg border text-xs font-semibold flex items-center gap-1">
+                    🔥 <span>${reactions.fire || 0}</span>
+                  </button>
+                </div>
+
+                <!-- Comment Toggle -->
+                <button onclick="toggleComments('${post.id}')" class="text-slate-500 hover:text-[#1b2a63] text-xs font-bold flex items-center gap-1 px-2 py-1 transition">
+                  <i class="fa-regular fa-comment"></i>
+                  <span>${comments.length}</span>
                 </button>
-              </form>
+              </div>
+
+              <!-- Collapsible Comments Drawer -->
+              <div id="comments-drawer-${post.id}" class="hidden border-t border-slate-100 mt-3 pt-3 space-y-2">
+                <div class="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                  ${comments.length === 0 ? `<p class="text-[10px] text-slate-400 italic">No replies yet.</p>` : ''}
+                  ${comments.map(c => `
+                    <div class="bg-slate-50 p-2 rounded-xl border border-slate-100 text-xs">
+                      <p class="text-slate-700 text-[11px]">${escapeHtml(c.text)}</p>
+                      <span class="text-[9px] text-slate-400 font-medium">${getRelativeTime(c.timestamp)}</span>
+                    </div>
+                  `).join('')}
+                </div>
+
+                <!-- Add Comment Form -->
+                <form onsubmit="addComment(event, '${post.id}')" class="flex gap-1.5 pt-1">
+                  <input type="text" id="comment-input-${post.id}" placeholder="Write a reply..." required
+                    class="flex-1 px-2.5 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#1b2a63]">
+                  <button type="submit" class="px-3 py-1.5 bg-[#1b2a63] hover:bg-[#131e47] text-white text-xs font-bold rounded-xl transition">
+                    Reply
+                  </button>
+                </form>
+              </div>
+
             </div>
           </div>
         `;
       }).join('');
     }
 
-    // Helper function to escape HTML special characters
     function escapeHtml(str) {
       return (str || '').replace(/[&<>"']/g, (m) => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#039;'
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;'
       }[m]));
     }
 
-    // Real-Time Listener on Firestore Collection
+    // Real-Time Listener
     const q = query(confessionsRef, orderBy("timestamp", "desc"));
     onSnapshot(q, (snapshot) => {
       document.getElementById('loadingSpinner').classList.add('hidden');
@@ -425,10 +678,10 @@
       }));
       filterConfessions();
     }, (error) => {
-      console.error("Firestore error: ", error);
+      console.error("Firestore Error: ", error);
       document.getElementById('loadingSpinner').innerHTML = `
-        <p class="text-sm text-red-500 font-bold">Failed to load posts from Database.</p>
-        <p class="text-xs text-slate-500 mt-1">Please verify your Firestore Security Rules in Firebase Console are published to test mode.</p>
+        <p class="text-xs text-red-500 font-bold">Failed to load posts from Database.</p>
+        <p class="text-[11px] text-slate-500 mt-1">Please ensure your Firebase Firestore Rules are set to open test mode.</p>
       `;
     });
   </script>
