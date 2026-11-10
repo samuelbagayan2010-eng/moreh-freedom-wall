@@ -4,14 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moreh Freedom Wall</title>
+  <!-- Browser Tab Logo / Favicon -->
+  <link rel="icon" type="image/jpeg" href="https://scontent.fmnl13-4.fna.fbcdn.net/v/t39.30808-6/354264045_643093787844317_3677144960425737849_n.jpg">
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #f8fafc;
+      background: linear-gradient(135deg, #f4f6fb 0%, #f1f5f9 100%);
       color: #0f172a;
+      min-height: 100vh;
     }
     .moreh-navy { color: #1b2a63; }
     .moreh-orange { color: #ff8c00; }
@@ -19,10 +22,10 @@
     .bg-moreh-orange { background-color: #ff8c00; }
     
     .tab-active {
-      background-color: #1b2a63;
+      background: linear-gradient(135deg, #1b2a63 0%, #293f8a 100%);
       color: #ffffff;
       font-weight: 700;
-      box-shadow: 0 4px 12px rgba(27, 42, 99, 0.2);
+      box-shadow: 0 4px 14px rgba(27, 42, 99, 0.25);
     }
     .tab-inactive {
       background-color: #ffffff;
@@ -30,53 +33,63 @@
       border: 1px solid #e2e8f0;
     }
     .tab-inactive:hover {
-      background-color: #f1f5f9;
-      color: #0f172a;
+      background-color: #f8fafc;
+      color: #1b2a63;
+      border-color: #cbd5e1;
     }
 
     .reaction-btn {
-      transition: all 0.15s ease-in-out;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .reaction-btn.active {
       background-color: #eff6ff;
       border-color: #3b82f6;
       color: #1d4ed8;
-      transform: scale(1.05);
+      transform: scale(1.06);
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased bg-slate-50">
+<body class="min-h-screen flex flex-col antialiased">
 
   <!-- Admin Active Banner -->
-  <div id="adminBanner" class="hidden bg-amber-500 text-white text-xs font-bold py-2 px-4 text-center flex items-center justify-center gap-2 shadow-inner">
-    <i class="fa-solid fa-shield-halved"></i>
+  <div id="adminBanner" class="hidden bg-gradient-to-r from-amber-500 to-orange-500 text-white text-xs font-bold py-2 px-4 text-center flex items-center justify-center gap-2 shadow-md z-40">
+    <i class="fa-solid fa-shield-halved text-sm animate-pulse"></i>
     <span>ADMIN MODE ACTIVE — You can moderate and delete any post on the wall</span>
-    <button onclick="window.logoutAdmin()" class="underline ml-2 hover:text-slate-100">Exit Admin Mode</button>
+    <button onclick="window.logoutAdmin()" class="underline ml-2 hover:text-slate-100 font-semibold cursor-pointer">Exit Admin Mode</button>
   </div>
 
   <!-- Header -->
-  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row items-center justify-between gap-3">
+  <header class="glass-card border-b border-slate-200/80 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-3">
       
       <!-- School Logo & Title -->
-      <div class="flex items-center gap-3 text-center sm:text-left">
-        <img src="moreh-removebg-preview.jpg" alt="Moreh Global Innovative College Logo" class="w-12 h-12 object-contain drop-shadow-sm rounded-full bg-slate-50 p-0.5 border border-slate-200">
+      <div class="flex items-center gap-3.5 text-center sm:text-left">
+        <div class="relative group">
+          <div class="absolute -inset-0.5 bg-gradient-to-r from-[#1b2a63] to-[#ff8c00] rounded-full blur opacity-50 group-hover:opacity-100 transition duration-300"></div>
+          <img src="https://scontent.fmnl13-4.fna.fbcdn.net/v/t39.30808-6/354264045_643093787844317_3677144960425737849_n.jpg" alt="Moreh Global Innovative College Logo" class="relative w-12 h-12 object-cover rounded-full border-2 border-white shadow-md">
+        </div>
         <div>
           <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight leading-none">
             <span class="text-[#1b2a63]">MOREH</span> <span class="text-[#ff8c00]">FREEDOM WALL</span>
           </h1>
-          <p class="text-[11px] text-slate-500 font-medium mt-0.5">School of Righteousness and Excellence • Victoria, Laguna</p>
+          <p class="text-[11px] text-slate-500 font-medium mt-1">School of Righteousness and Excellence • Victoria, Laguna</p>
         </div>
       </div>
 
-      <!-- Header Buttons -->
-      <div class="flex items-center gap-2 w-full sm:w-auto">
-        <button onclick="window.promptAdminLogin()" class="px-3 py-2 text-slate-600 hover:text-[#1b2a63] bg-slate-100 hover:bg-slate-200 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5">
+      <!-- Header Action Buttons -->
+      <div class="flex items-center gap-2.5 w-full sm:w-auto">
+        <button onclick="window.promptAdminLogin()" class="px-3.5 py-2 text-slate-600 hover:text-[#1b2a63] bg-slate-100/80 hover:bg-slate-200 text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-sm">
           <i class="fa-solid fa-shield-halved text-[#1b2a63]"></i>
           <span class="hidden sm:inline">Admin</span>
         </button>
 
-        <button onclick="window.openModal()" class="flex-1 sm:flex-none px-4 py-2.5 bg-[#ff8c00] hover:bg-[#e07b00] text-white font-bold text-xs rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2">
+        <button onclick="window.openModal()" class="flex-1 sm:flex-none px-4.5 py-2.5 bg-gradient-to-r from-[#ff8c00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold text-xs rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 transform active:scale-95">
           <i class="fa-solid fa-pen-to-square"></i> Create Confession
         </button>
       </div>
@@ -88,26 +101,26 @@
   <main class="max-w-4xl mx-auto px-4 sm:px-6 py-6 flex-1 w-full">
     
     <!-- Controls (Search & Filter) -->
-    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm mb-6 space-y-4">
+    <div class="glass-card p-4 rounded-2xl border border-slate-200/80 shadow-sm mb-6 space-y-4">
       
       <!-- Search Input -->
       <div class="relative">
         <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-        <input type="text" id="searchInput" oninput="window.filterConfessions()" placeholder="Search confessions..." 
-          class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] focus:bg-white transition-all">
+        <input type="text" id="searchInput" oninput="window.filterConfessions()" placeholder="Search confessions or authors..." 
+          class="w-full pl-11 pr-4 py-2.5 bg-slate-50/80 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] focus:bg-white transition-all shadow-inner">
       </div>
 
-      <!-- Categories Filter -->
+      <!-- Categories Filter Tabs -->
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex items-center gap-2 overflow-x-auto pb-1 sm:pb-0 w-full sm:w-auto">
-          <button onclick="window.setCategory('All')" id="btn-All" class="tab-btn tab-active px-4 py-1.5 rounded-xl text-xs font-semibold transition-all">All</button>
-          <button onclick="window.setCategory('General')" id="btn-General" class="tab-btn tab-inactive px-4 py-1.5 rounded-xl text-xs font-semibold transition-all">General</button>
-          <button onclick="window.setCategory('Crush')" id="btn-Crush" class="tab-btn tab-inactive px-4 py-1.5 rounded-xl text-xs font-semibold transition-all">Crush 💕</button>
-          <button onclick="window.setCategory('Shoutouts')" id="btn-Shoutouts" class="tab-btn tab-inactive px-4 py-1.5 rounded-xl text-xs font-semibold transition-all">Shoutouts 📢</button>
+          <button onclick="window.setCategory('All')" id="btn-All" class="tab-btn tab-active px-4 py-2 rounded-xl text-xs font-semibold transition-all">All Posts</button>
+          <button onclick="window.setCategory('General')" id="btn-General" class="tab-btn tab-inactive px-4 py-2 rounded-xl text-xs font-semibold transition-all">General</button>
+          <button onclick="window.setCategory('Crush')" id="btn-Crush" class="tab-btn tab-inactive px-4 py-2 rounded-xl text-xs font-semibold transition-all">Crush 💕</button>
+          <button onclick="window.setCategory('Shoutouts')" id="btn-Shoutouts" class="tab-btn tab-inactive px-4 py-2 rounded-xl text-xs font-semibold transition-all">Shoutouts 📢</button>
         </div>
         
-        <div class="text-xs text-slate-400 font-medium">
-          Total Posts: <span id="postCount" class="font-bold text-slate-700">0</span>
+        <div class="text-xs text-slate-500 font-medium bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200/60">
+          Total Posts: <span id="postCount" class="font-bold text-[#1b2a63]">0</span>
         </div>
       </div>
 
@@ -115,20 +128,20 @@
 
     <!-- Feed Wall -->
     <div id="confessionFeed" class="space-y-4">
-      <div id="loadingSpinner" class="text-center py-16 bg-white border border-slate-200 rounded-2xl shadow-sm">
+      <div id="loadingSpinner" class="text-center py-16 glass-card border border-slate-200 rounded-2xl shadow-sm">
         <i class="fa-solid fa-spinner fa-spin text-3xl text-[#1b2a63]"></i>
         <p class="text-xs text-slate-500 mt-3 font-medium">Connecting to Freedom Wall...</p>
       </div>
     </div>
 
     <!-- Empty Feed State -->
-    <div id="emptyFeed" class="hidden text-center py-16 bg-white border border-dashed border-slate-300 rounded-2xl p-6">
-      <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3 text-slate-400 text-2xl">
+    <div id="emptyFeed" class="hidden text-center py-16 glass-card border border-dashed border-slate-300 rounded-2xl p-6 shadow-sm">
+      <div class="w-16 h-16 bg-blue-50 text-[#1b2a63] rounded-full flex items-center justify-center mx-auto mb-3 text-2xl shadow-inner">
         <i class="fa-solid fa-comment-dots"></i>
       </div>
       <h3 class="text-base font-bold text-slate-800">No confessions found</h3>
       <p class="text-xs text-slate-500 max-w-sm mx-auto mt-1">Be the first student to post anonymously on the wall!</p>
-      <button onclick="window.openModal()" class="mt-4 px-4 py-2 bg-[#1b2a63] text-white text-xs font-bold rounded-xl shadow-sm hover:bg-[#131f4a] transition-all">
+      <button onclick="window.openModal()" class="mt-4 px-4.5 py-2 bg-[#1b2a63] hover:bg-[#131f4a] text-white text-xs font-bold rounded-xl shadow-md hover:shadow-lg transition-all">
         Post Now
       </button>
     </div>
@@ -137,9 +150,9 @@
 
   <!-- Create Confession Modal -->
   <div id="createModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all">
+    <div class="glass-card w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 overflow-hidden transform transition-all animate-in fade-in zoom-in-95 duration-200">
       
-      <div class="bg-[#1b2a63] text-white p-4 flex items-center justify-between">
+      <div class="bg-gradient-to-r from-[#1b2a63] to-[#293f8a] text-white p-4.5 flex items-center justify-between">
         <h3 class="font-bold text-sm flex items-center gap-2">
           <i class="fa-solid fa-pen-nib text-[#ff8c00]"></i> Write Anonymous Confession
         </h3>
@@ -150,12 +163,12 @@
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Pseudonym (Optional)</label>
           <input type="text" id="authorInput" placeholder="e.g. Secret Student, BSIT Boy, Grade 11" 
-            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63]">
+            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] focus:bg-white transition-all shadow-inner">
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">Category *</label>
-          <select id="categorySelect" required class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63]">
+          <select id="categorySelect" required class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] focus:bg-white transition-all shadow-inner">
             <option value="General">General</option>
             <option value="Crush">Crush 💕</option>
             <option value="Shoutouts">Shoutouts 📢</option>
@@ -168,12 +181,12 @@
             <span id="charCounter" class="text-[10px] text-slate-400 font-semibold">0 / 500</span>
           </div>
           <textarea id="contentInput" required maxlength="500" rows="4" oninput="window.updateCharCounter()" placeholder="Write your confession anonymously..." 
-            class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] resize-none"></textarea>
+            class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#1b2a63] focus:bg-white transition-all shadow-inner resize-none"></textarea>
         </div>
 
-        <div class="pt-2 flex items-center justify-end gap-2">
-          <button type="button" onclick="window.closeModal()" class="px-4 py-2 border border-slate-200 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-100 transition-all">Cancel</button>
-          <button type="submit" id="submitBtn" class="px-5 py-2 bg-[#ff8c00] hover:bg-[#e07b00] text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-2">
+        <div class="pt-2 flex items-center justify-end gap-2.5">
+          <button type="button" onclick="window.closeModal()" class="px-4.5 py-2.5 border border-slate-200 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-100 transition-all">Cancel</button>
+          <button type="submit" id="submitBtn" class="px-5 py-2.5 bg-gradient-to-r from-[#ff8c00] to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-2 transform active:scale-95">
             <span>Post Anonymously</span>
             <i class="fa-solid fa-paper-plane"></i>
           </button>
@@ -184,11 +197,11 @@
   </div>
 
   <!-- Footer -->
-  <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-500">
+  <footer class="glass-card border-t border-slate-200/80 py-4 text-center text-xs text-slate-500 mt-auto">
     <p>© Moreh Global Innovative College Freedom Wall • Student Built</p>
   </footer>
 
-  <!-- Firebase Script -->
+  <!-- Firebase Script & Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { 
@@ -223,7 +236,6 @@
     let activeCategory = 'All';
     let isAdmin = localStorage.getItem('moreh_admin') === 'true';
 
-    // Device Keys Storage for Author Verification
     const getMyPostKeys = () => JSON.parse(localStorage.getItem('my_post_keys') || '{}');
     const saveMyPostKey = (postId, secretKey) => {
       const keys = getMyPostKeys();
@@ -231,7 +243,6 @@
       localStorage.setItem('my_post_keys', JSON.stringify(keys));
     };
 
-    // Local Reactions Storage
     const getMyReactions = () => JSON.parse(localStorage.getItem('my_reactions') || '{}');
     const saveMyReaction = (postId, type, state) => {
       const reactions = getMyReactions();
@@ -244,7 +255,6 @@
       document.getElementById('adminBanner').classList.remove('hidden');
     }
 
-    // Attach Functions Globally
     window.openModal = () => document.getElementById('createModal').classList.remove('hidden');
     window.closeModal = () => {
       document.getElementById('createModal').classList.add('hidden');
@@ -280,10 +290,10 @@
     window.setCategory = (cat) => {
       activeCategory = cat;
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.className = 'tab-btn tab-inactive px-4 py-1.5 rounded-xl text-xs font-semibold transition-all';
+        btn.className = 'tab-btn tab-inactive px-4 py-2 rounded-xl text-xs font-semibold transition-all';
       });
       const activeBtn = document.getElementById(`btn-${cat}`);
-      if(activeBtn) activeBtn.className = 'tab-btn tab-active px-4 py-1.5 rounded-xl text-xs font-semibold transition-all';
+      if(activeBtn) activeBtn.className = 'tab-btn tab-active px-4 py-2 rounded-xl text-xs font-semibold transition-all';
       window.filterConfessions();
     };
 
@@ -306,7 +316,6 @@
       const authorSecretKey = 'key_' + Math.random().toString(36).substr(2, 9) + Date.now();
       const tempId = 'temp_' + Date.now();
 
-      // Instant Local Display
       const tempPost = {
         id: tempId,
         author,
@@ -451,36 +460,36 @@
         const canDelete = isOwner || isAdmin;
 
         const categoryBadgeClass = 
-          post.category === 'Crush' ? 'bg-pink-100 text-pink-700' :
-          post.category === 'Shoutouts' ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700';
+          post.category === 'Crush' ? 'bg-pink-100 text-pink-700 border border-pink-200' :
+          post.category === 'Shoutouts' ? 'bg-amber-100 text-amber-700 border border-amber-200' : 'bg-blue-100 text-blue-700 border border-blue-200';
 
         const postUserReactions = myReactions[post.id] || {};
 
         return `
-          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-all relative">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-full bg-[#1b2a63] text-white font-bold flex items-center justify-center text-xs shadow-sm">
+          <div class="glass-card rounded-2xl border border-slate-200/80 p-5 shadow-sm hover:shadow-md transition-all relative">
+            <div class="flex items-center justify-between mb-3.5">
+              <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-[#1b2a63] to-[#293f8a] text-white font-bold flex items-center justify-center text-xs shadow-sm">
                   ${(post.author || 'A')[0].toUpperCase()}
                 </div>
                 <div>
                   <h4 class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
                     ${escapeHtml(post.author || 'Anonymous Student')}
-                    ${isOwner ? `<span class="text-[9px] bg-slate-100 text-slate-500 font-semibold px-1.5 py-0.5 rounded">You</span>` : ''}
+                    ${isOwner ? `<span class="text-[9px] bg-slate-100 text-slate-600 font-bold px-1.5 py-0.5 rounded border border-slate-200">You</span>` : ''}
                   </h4>
                   <p class="text-[10px] text-slate-400 font-medium">${getRelativeTime(post.timestamp)}</p>
                 </div>
               </div>
 
               <div class="flex items-center gap-2">
-                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${categoryBadgeClass}">
+                <span class="text-[11px] font-bold px-3 py-1 rounded-full ${categoryBadgeClass}">
                   ${post.category}
                 </span>
 
                 ${canDelete ? `
                   <button onclick="window.deleteConfession('${post.id}', '${post.authorSecretKey || ''}')" 
                     title="${isAdmin ? 'Admin Delete' : 'Delete Your Post'}"
-                    class="w-7 h-7 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition-all">
+                    class="w-7.5 h-7.5 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 flex items-center justify-center transition-all border border-transparent hover:border-red-200">
                     <i class="fa-solid fa-trash text-xs"></i>
                   </button>
                 ` : ''}
@@ -491,33 +500,33 @@
               ${escapeHtml(post.content)}
             </p>
 
-            <div class="flex flex-wrap items-center justify-between border-t border-slate-100 pt-3 gap-2">
-              <div class="flex items-center gap-1">
-                <button onclick="window.reactPost('${post.id}', 'heart')" class="reaction-btn ${postUserReactions.heart ? 'active' : ''} border border-slate-200 px-2.5 py-1 rounded-xl text-slate-600 text-xs font-semibold flex items-center gap-1">
+            <div class="flex flex-wrap items-center justify-between border-t border-slate-100 pt-3.5 gap-2">
+              <div class="flex items-center gap-1.5">
+                <button onclick="window.reactPost('${post.id}', 'heart')" class="reaction-btn ${postUserReactions.heart ? 'active' : ''} border border-slate-200/80 bg-white px-3 py-1.5 rounded-xl text-slate-600 text-xs font-semibold flex items-center gap-1.5 shadow-sm">
                   ❤️ <span>${reactions.heart || 0}</span>
                 </button>
-                <button onclick="window.reactPost('${post.id}', 'laugh')" class="reaction-btn ${postUserReactions.laugh ? 'active' : ''} border border-slate-200 px-2.5 py-1 rounded-xl text-slate-600 text-xs font-semibold flex items-center gap-1">
+                <button onclick="window.reactPost('${post.id}', 'laugh')" class="reaction-btn ${postUserReactions.laugh ? 'active' : ''} border border-slate-200/80 bg-white px-3 py-1.5 rounded-xl text-slate-600 text-xs font-semibold flex items-center gap-1.5 shadow-sm">
                   😂 <span>${reactions.laugh || 0}</span>
                 </button>
-                <button onclick="window.reactPost('${post.id}', 'thumbs')" class="reaction-btn ${postUserReactions.thumbs ? 'active' : ''} border border-slate-200 px-2.5 py-1 rounded-xl text-slate-600 text-xs font-semibold flex items-center gap-1">
+                <button onclick="window.reactPost('${post.id}', 'thumbs')" class="reaction-btn ${postUserReactions.thumbs ? 'active' : ''} border border-slate-200/80 bg-white px-3 py-1.5 rounded-xl text-slate-600 text-xs font-semibold flex items-center gap-1.5 shadow-sm">
                   👍 <span>${reactions.thumbs || 0}</span>
                 </button>
-                <button onclick="window.reactPost('${post.id}', 'fire')" class="reaction-btn ${postUserReactions.fire ? 'active' : ''} border border-slate-200 px-2.5 py-1 rounded-xl text-slate-600 text-xs font-semibold flex items-center gap-1">
+                <button onclick="window.reactPost('${post.id}', 'fire')" class="reaction-btn ${postUserReactions.fire ? 'active' : ''} border border-slate-200/80 bg-white px-3 py-1.5 rounded-xl text-slate-600 text-xs font-semibold flex items-center gap-1.5 shadow-sm">
                   🔥 <span>${reactions.fire || 0}</span>
                 </button>
               </div>
 
-              <button onclick="window.toggleComments('${post.id}')" class="text-slate-500 hover:text-[#1b2a63] text-xs font-bold flex items-center gap-1.5 px-2 py-1 transition-all">
+              <button onclick="window.toggleComments('${post.id}')" class="text-slate-500 hover:text-[#1b2a63] text-xs font-bold flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200/60 transition-all shadow-sm">
                 <i class="fa-regular fa-comment"></i>
                 <span>${comments.length} Comments</span>
               </button>
             </div>
 
-            <div id="comments-drawer-${post.id}" class="hidden border-t border-slate-100 mt-3 pt-3 space-y-3">
+            <div id="comments-drawer-${post.id}" class="hidden border-t border-slate-100 mt-3.5 pt-3.5 space-y-3">
               <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
                 ${comments.length === 0 ? `<p class="text-[11px] text-slate-400 italic">No comments yet. Say something nice!</p>` : ''}
                 ${comments.map(c => `
-                  <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                  <div class="bg-slate-50/80 p-3 rounded-xl border border-slate-200/60">
                     <p class="text-xs text-slate-700">${escapeHtml(c.text)}</p>
                     <span class="text-[9px] text-slate-400 font-medium">${getRelativeTime(c.timestamp)}</span>
                   </div>
@@ -526,8 +535,8 @@
 
               <form onsubmit="window.addComment(event, '${post.id}')" class="flex gap-2 pt-1">
                 <input type="text" id="comment-input-${post.id}" placeholder="Write a comment..." required
-                  class="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#1b2a63]">
-                <button type="submit" class="px-3 py-1.5 bg-[#1b2a63] hover:bg-[#131f4a] text-white text-xs font-bold rounded-xl transition-all">
+                  class="flex-1 px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1 focus:ring-[#1b2a63] shadow-inner">
+                <button type="submit" class="px-4 py-2 bg-[#1b2a63] hover:bg-[#131f4a] text-white text-xs font-bold rounded-xl transition-all shadow-sm">
                   Reply
                 </button>
               </form>
