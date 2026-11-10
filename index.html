@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moreh Global — Freedom & Confession Wall</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        moreh: {
+                            bg: '#f8fafc',
+                            surface: '#ffffff',
+                            card: '#ffffff',
+                            navy: '#1b2a63',
+                            navyHover: '#131e47',
+                            border: '#e2e8f0',
+                            borderHover: '#cbd5e1',
+                            orange: '#ff8c00',
+                            orangeHover: '#e07b00',
+                            gold: '#f59e0b',
+                            darkText: '#0f172a',
+                            mutedText: '#64748b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(8px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-out forwards'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+
+        /* Clean subtle backdrop tint for light mode */
+        .clean-backdrop {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(255, 140, 0, 0.05) 0%, rgba(248, 250, 252, 0) 65%),
+                        radial-gradient(circle at 100% 100%, rgba(27, 42, 99, 0.04) 0%, rgba(248, 250, 252, 0) 50%);
+        }
+
+        /* Light Mode Card Styling */
+        .confession-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .confession-card:hover {
+            border-color: rgba(255, 140, 0, 0.4);
+            box-shadow: 0 10px 25px -5px rgba(27, 42, 99, 0.08);
+        }
+
+        /* Custom Scrollbar for Light Theme */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ff8c00;
+            border-radius: 9999px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative font-sans antialiased">
+
+    <!-- Clean Backdrop Glow -->
+    <div class="clean-backdrop"></div>
+
+    <!-- Main Container -->
+    <div class="relative z-10 flex-grow flex flex-col">
+        
+        <!-- Educational & Entertainment Disclaimer Bar -->
+        <div class="bg-moreh-navy text-white text-center py-2 px-4 text-xs flex items-center justify-center gap-2 shadow-sm">
+            <i data-lucide="info" class="w-3.5 h-3.5 text-moreh-orange"></i>
+            <span>Moreh Global Student Freedom Wall • Strict Educational & Entertainment Purposes Only</span>
+        </div>
+
+        <!-- Header -->
+        <header class="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-moreh-border shadow-sm">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between">
+                <!-- Branding without logo or official badge -->
+                <div class="flex items-center gap-3">
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <h1 class="font-extrabold text-base sm:text-lg text-moreh-navy leading-tight tracking-tight">
+                                MOREH STUDENTS FREEDOM <span class="text-moreh-orange">WALL</span>
+                            </h1>
+                        </div>
+                        <p class="text-[11px] text-moreh-mutedText font-medium">Moreh Global Innovative College • Victoria, Laguna</p>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="flex items-center gap-2">
+                    <button id="open-modal-btn" class="flex items-center gap-2 bg-moreh-orange hover:bg-moreh-orangeHover text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-xl transition duration-200 shadow-md shadow-moreh-orange/25">
+                        <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                        <span>Post Confession</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 flex-grow w-full">
+
+            <!-- Hero Section -->
+            <div class="text-center mb-8">
+                <h2 class="text-2xl sm:text-3xl font-black text-moreh-navy tracking-tight">
+                    Student <span class="text-moreh-orange">Confession Wall</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-moreh-mutedText mt-1 max-w-md mx-auto">
+                    Share your thoughts, crushes, and appreciation anonymously with fellow Moreh Global students.
+                    Please remember to keep it respectful and appropriate. This platform is for educational and entertainment purposes only.
+                    <strong>THIS IS A TEMPORARY WEBSITE</strong>
+            
+                </p>
+            </div>
+
+            <!-- Controls: Search & Category Filters -->
+            <div class="mb-8 space-y-4">
+                <div class="flex flex-col sm:flex-row gap-3 items-center justify-between">
+                    <!-- Search Input -->
+                    <div class="relative w-full sm:w-80">
+                        <i data-lucide="search" class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="search-input" placeholder="Search confessions..." 
+                            class="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2 text-xs text-moreh-darkText placeholder-slate-400 focus:outline-none focus:border-moreh-orange focus:ring-1 focus:ring-moreh-orange transition">
+                    </div>
+
+                    <!-- Category Filter Buttons (Only All, General, Crush, Shoutouts) -->
+                    <div class="flex items-center gap-1.5 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
+                        <button data-category="All" class="filter-btn active bg-moreh-navy text-white text-xs px-4 py-2 rounded-xl font-semibold transition whitespace-nowrap shadow-sm">
+                            All
+                        </button>
+                        <button data-category="General" class="filter-btn bg-white hover:bg-slate-100 text-moreh-mutedText border border-slate-200 text-xs px-4 py-2 rounded-xl font-medium transition whitespace-nowrap">
+                            📌 General
+                        </button>
+                        <button data-category="Crush" class="filter-btn bg-white hover:bg-slate-100 text-moreh-mutedText border border-slate-200 text-xs px-4 py-2 rounded-xl font-medium transition whitespace-nowrap">
+                            💘 Crush
+                        </button>
+                        <button data-category="Shoutouts" class="filter-btn bg-white hover:bg-slate-100 text-moreh-mutedText border border-slate-200 text-xs px-4 py-2 rounded-xl font-medium transition whitespace-nowrap">
+                            🌟 Shoutouts
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Confessions Grid Container -->
+            <div id="confessions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- User confessions will appear here dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="empty-state" class="text-center py-16 px-4 bg-white rounded-2xl border border-dashed border-slate-300 shadow-sm max-w-xl mx-auto">
+                <i data-lucide="message-square-plus" class="w-12 h-12 mx-auto text-moreh-orange opacity-80 mb-3"></i>
+                <h3 class="text-base font-bold text-moreh-navy">No confessions yet!</h3>
+                <p class="text-xs text-moreh-mutedText mt-1 mb-4">Be the first student from Moreh Global Innovative College to post anonymously.</p>
+                <button onclick="openModal()" class="inline-flex items-center gap-2 bg-moreh-orange hover:bg-moreh-orangeHover text-white text-xs font-bold px-4 py-2.5 rounded-xl transition shadow-sm">
+                    <i data-lucide="plus" class="w-4 h-4"></i>
+                    <span>Create First Post</span>
+                </button>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-slate-200 bg-white py-6 text-center text-xs text-moreh-mutedText">
+            <div class="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+                <p>© Moreh Global Innovative College Student Wall</p>
+                <p class="text-[11px] text-slate-400">Victoria, Laguna, Philippines</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Post Confession Modal -->
+    <div id="confession-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white border border-slate-200 rounded-2xl w-full max-w-lg shadow-xl overflow-hidden transform scale-95 transition-transform duration-300">
+            
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-moreh-navy text-white">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="send" class="w-4 h-4 text-moreh-orange"></i>
+                    <h3 class="font-bold text-white text-base">Create Anonymous Confession</h3>
+                </div>
+                <button id="close-modal-btn" class="text-slate-300 hover:text-white transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Form -->
+            <form id="submission-form" class="p-6 space-y-4">
+                <!-- Nickname Input -->
+                <div>
+                    <label class="block text-xs font-bold text-moreh-navy uppercase tracking-wider mb-1.5">Nickname / Pseudonym (Optional)</label>
+                    <input type="text" id="modal-author" placeholder="Anonymous Student" 
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2 text-xs text-moreh-darkText placeholder-slate-400 focus:outline-none focus:border-moreh-orange focus:bg-white transition">
+                </div>
+
+                <!-- Category Selector -->
+                <!-- Category Selector (Only General, Crush, Shoutouts) -->
+                <div>
+                    <label class="block text-xs font-bold text-moreh-navy uppercase tracking-wider mb-1.5">Category</label>
+                    <select id="modal-category" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-moreh-darkText focus:outline-none focus:border-moreh-orange focus:bg-white transition">
+                        <option value="General">📌 General</option>
+                        <option value="Crush">💘 Crush</option>
+                        <option value="Shoutouts">🌟 Shoutouts</option>
+                    </select>
+                </div>
+
+                <!-- Confession Text Area -->
+                <div>
+                    <label class="block text-xs font-bold text-moreh-navy uppercase tracking-wider mb-1.5">Confession</label>
+                    <textarea id="modal-content" rows="4" required placeholder="Write your confession or campus thoughts here..." 
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs text-moreh-darkText placeholder-slate-400 focus:outline-none focus:border-moreh-orange focus:bg-white resize-none transition"></textarea>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="w-full bg-moreh-orange hover:bg-moreh-orangeHover text-white font-bold text-xs py-3 rounded-xl transition duration-200 shadow-md shadow-moreh-orange/20 flex items-center justify-center gap-2">
+                    <i data-lucide="check-circle" class="w-4 h-4"></i>
+                    <span>Post Confession</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Start completely empty (No pre-loaded hardcoded posts)
+        let confessions = JSON.parse(localStorage.getItem('mgic_confessions_wall')) || [];
+        let currentFilter = 'All';
+        let searchQuery = '';
+
+        // Save State
+        function saveState() {
+            localStorage.setItem('mgic_confessions_wall', JSON.stringify(confessions));
+        }
+
+        // Relative Timestamp Calculator
+        function getRelativeTime(timestampMs) {
+            if (!timestampMs) return 'Just now';
+            const now = Date.now();
+            const elapsedSeconds = Math.floor((now - timestampMs) / 1000);
+
+            if (elapsedSeconds < 30) return 'Just now';
+            if (elapsedSeconds < 60) return `${elapsedSeconds}s ago`;
+
+            const elapsedMinutes = Math.floor(elapsedSeconds / 60);
+            if (elapsedMinutes < 60) return `${elapsedMinutes}m ago`;
+
+            const elapsedHours = Math.floor(elapsedMinutes / 60);
+            if (elapsedHours < 24) return `${elapsedHours}h ago`;
+
+            const date = new Date(timestampMs);
+            return date.toLocaleDateString(undefined, { 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+        }
+
+        // Render Confession Grid
+        function renderConfessions() {
+            const grid = document.getElementById('confessions-grid');
+            const emptyState = document.getElementById('empty-state');
+            grid.innerHTML = '';
+
+            const filtered = confessions.filter(item => {
+                const matchesCategory = currentFilter === 'All' || item.category === currentFilter;
+                const matchesSearch = item.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                      item.id.toLowerCase().includes(searchQuery.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                emptyState.classList.remove('hidden');
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            filtered.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'confession-card rounded-2xl p-5 flex flex-col justify-between animate-fade-in';
+
+                const commentsCount = item.comments ? item.comments.length : 0;
+                const commentsHTML = item.comments && item.comments.length > 0
+                    ? item.comments.map(c => `
+                        <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 text-[11px]">
+                            <div class="flex items-center justify-between mb-1">
+                                <span class="font-bold text-moreh-navy">${escapeHTML(c.author)}</span>
+                                <span class="text-[10px] text-slate-400">${getRelativeTime(c.createdAt)}</span>
+                            </div>
+                            <p class="text-slate-700 leading-normal">${escapeHTML(c.text)}</p>
+                        </div>
+                    `).join('')
+                    : `<p class="text-[11px] text-slate-400 italic py-1">No comments yet. Start the conversation!</p>`;
+
+                const relativeTimeStr = getRelativeTime(item.createdAt);
+
+                card.innerHTML = `
+                    <div>
+                        <!-- Header -->
+                        <div class="flex items-center justify-between gap-2 mb-2.5">
+                            <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-orange-100 text-moreh-orange border border-orange-200">
+                                ${escapeHTML(item.category)}
+                            </span>
+                            <span class="text-[10px] font-mono text-slate-400" title="${new Date(item.createdAt).toLocaleString()}">
+                                ${item.id} • ${relativeTimeStr}
+                            </span>
+                        </div>
+
+                        <!-- Author -->
+                        <div class="flex items-center gap-1.5 mb-2.5">
+                            <i data-lucide="user" class="w-3.5 h-3.5 text-moreh-navy"></i>
+                            <span class="text-xs font-semibold text-moreh-navy">${escapeHTML(item.author)}</span>
+                        </div>
+
+                        <!-- Post Body -->
+                        <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mb-4 whitespace-pre-line">
+                            ${escapeHTML(item.content)}
+                        </p>
+                    </div>
+
+                    <!-- Interactive Footer -->
+                    <div class="pt-3 border-t border-slate-100 flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <!-- Reaction Buttons (Heart, Laugh, Like, Fire) -->
+                            <div class="flex items-center gap-2.5">
+                                <button onclick="reactPost('${item.id}', 'likes')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-rose-500 transition" title="Love">
+                                    <i data-lucide="heart" class="w-3.5 h-3.5 text-rose-500"></i>
+                                    <span class="font-semibold text-[11px]">${item.likes || 0}</span>
+                                </button>
+                                <button onclick="reactPost('${item.id}', 'laughs')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-amber-500 transition" title="Haha">
+                                    <span class="text-xs">😂</span>
+                                    <span class="font-semibold text-[11px]">${item.laughs || 0}</span>
+                                </button>
+                                <button onclick="reactPost('${item.id}', 'thumbs')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-blue-500 transition" title="Thumbs Up">
+                                    <i data-lucide="thumbs-up" class="w-3.5 h-3.5 text-blue-500"></i>
+                                    <span class="font-semibold text-[11px]">${item.thumbs || 0}</span>
+                                </button>
+                                <button onclick="reactPost('${item.id}', 'fires')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-orange-500 transition" title="Fire">
+                                    <i data-lucide="flame" class="w-3.5 h-3.5 text-orange-500"></i>
+                                    <span class="font-semibold text-[11px]">${item.fires || 0}</span>
+                                </button>
+                            </div>
+
+                            <!-- Comment Drawer Toggle -->
+                            <button onclick="toggleComments('${item.id}')" class="flex items-center gap-1 text-xs text-slate-500 hover:text-moreh-navy transition">
+                                <i data-lucide="message-square" class="w-3.5 h-3.5 text-moreh-navy"></i>
+                                <span class="text-[11px] font-medium">${commentsCount} Comments</span>
+                            </button>
+                        </div>
+
+                        <!-- Comment Drawer -->
+                        <div id="comments-${item.id}" class="hidden mt-2 pt-2 border-t border-slate-100 space-y-2">
+                            <div class="max-h-36 overflow-y-auto space-y-1.5 pr-1">
+                                ${commentsHTML}
+                            </div>
+                            <div class="flex gap-1.5 mt-2">
+                                <input type="text" id="comment-input-${item.id}" placeholder="Write a comment..." 
+                                    class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5 text-xs text-moreh-darkText placeholder-slate-400 focus:outline-none focus:border-moreh-orange focus:bg-white transition">
+                                <button onclick="addComment('${item.id}')" class="bg-moreh-navy hover:bg-moreh-navyHover text-white text-xs px-3 py-1.5 rounded-lg font-semibold transition">
+                                    Reply
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        // HTML Escape Guard
+        function escapeHTML(str) {
+            return (str || '').replace(/[&<>'"]/g, 
+                tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+            );
+        }
+
+        // Reaction Handler
+        window.reactPost = function(id, type) {
+            const item = confessions.find(c => c.id === id);
+            if (item) {
+                item[type] = (item[type] || 0) + 1;
+                saveState();
+                renderConfessions();
+            }
+        };
+
+        // Comment Drawer Toggle
+        window.toggleComments = function(id) {
+            const el = document.getElementById(`comments-${id}`);
+            if (el) el.classList.toggle('hidden');
+        };
+
+        // Add Anonymous Comment
+        window.addComment = function(id) {
+            const input = document.getElementById(`comment-input-${id}`);
+            const text = input ? input.value.trim() : '';
+            if (!text) return;
+
+            const item = confessions.find(c => c.id === id);
+            if (item) {
+                if (!item.comments) item.comments = [];
+                item.comments.push({
+                    author: 'Anonymous Student',
+                    text: text,
+                    createdAt: Date.now()
+                });
+                saveState();
+                renderConfessions();
+                setTimeout(() => {
+                    const el = document.getElementById(`comments-${id}`);
+                    if (el) el.classList.remove('hidden');
+                }, 50);
+            }
+        };
+
+        // Modal Elements & Controls
+        const modal = document.getElementById('confession-modal');
+        const openModalBtn = document.getElementById('open-modal-btn');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+
+        window.openModal = function() {
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.children[0].classList.remove('scale-95');
+            modal.children[0].classList.add('scale-100');
+        }
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.children[0].classList.remove('scale-100');
+            modal.children[0].classList.add('scale-95');
+        }
+
+        openModalBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        // Form Submit Handler
+        document.getElementById('submission-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const authorInput = document.getElementById('modal-author').value.trim();
+            const category = document.getElementById('modal-category').value;
+            const content = document.getElementById('modal-content').value.trim();
+
+            if (!content) return;
+
+            const now = Date.now();
+            const newPost = {
+                id: `MGIC-${Math.floor(1000 + Math.random() * 9000)}`,
+                author: authorInput || 'Anonymous Student',
+                category: category,
+                content: content,
+                createdAt: now,
+                likes: 0,
+                laughs: 0,
+                thumbs: 0,
+                fires: 0,
+                comments: []
+            };
+
+            confessions.unshift(newPost);
+            saveState();
+            renderConfessions();
+            closeModal();
+            document.getElementById('submission-form').reset();
+        });
+
+        // Search Input Filter
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderConfessions();
+        });
+
+        // Category Filter Buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('bg-moreh-navy', 'text-white', 'shadow-sm');
+                    b.classList.add('bg-white', 'text-moreh-mutedText');
+                });
+                const target = e.currentTarget;
+                target.classList.remove('bg-white', 'text-moreh-mutedText');
+                target.classList.add('bg-moreh-navy', 'text-white', 'shadow-sm');
+
+                currentFilter = target.getAttribute('data-category');
+                renderConfessions();
+            });
+        });
+
+        // Realtime timestamp periodic refresher (every 30 seconds)
+        setInterval(() => {
+            if (confessions.length > 0) {
+                renderConfessions();
+            }
+        }, 30000);
+
+        // App Initialization
+        window.onload = function() {
+            renderConfessions();
+        };
+    </script>
+</body>
+</html>
